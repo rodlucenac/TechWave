@@ -76,3 +76,15 @@ Com a **Política de Estoque** e o **Sistema de Notificações de Status de Pedi
 ✔ **Frameworks:** SpringBoot e Next.js 
 
 ---
+
+## Modelo conceitual
+
+![Conceitual TechWave foto](https://github.com/user-attachments/assets/3227fcf6-a1f1-4f10-a5ce-0523748b62fa)
+
+---
+
+## Modelo logico
+
+![Logico TechWave foto](https://github.com/user-attachments/assets/8064ad32-2c27-4090-a93f-478a41dfbb12)
+
+---
