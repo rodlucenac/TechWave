@@ -73,7 +73,7 @@ Com a **Política de Estoque** e o **Sistema de Notificações de Status de Pedi
 ## 🛠️ Tecnologias Utilizadas  
 ✔ **Linguagem:** Java  
 ✔ **Banco de Dados:** MySQL  
-✔ **Frameworks:** SpringBoot e Next.js 
+✔ **Frameworks:** SpringBoot e React.js 
 
 ---
 
