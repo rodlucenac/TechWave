@@ -1,10 +1,10 @@
-package br.com.backend.techwave;
+package br.com.projeto.api;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class TechwaveApplicationTests {
+class ApiApplicationTests {
 
 	@Test
 	void contextLoads() {
