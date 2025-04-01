@@ -81,11 +81,10 @@ Com a **Política de Estoque** e o **Sistema de Notificações de Status de Pedi
 
 ![Conceitual TechWave foto](https://github.com/user-attachments/assets/061bb944-12ae-4233-9d61-40240b5468e2)
 
-
 ---
 
 ## 🧠 Modelo lógico
 
-![Logico TechWave foto](https://github.com/user-attachments/assets/8064ad32-2c27-4090-a93f-478a41dfbb12)
+![Logico TechWave foto](https://github.com/user-attachments/assets/b8cd6a4b-fc68-4526-af67-77c39c7bade1)
 
 ---
