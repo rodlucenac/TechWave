@@ -1,81 +1,75 @@
-# 🛒 TechWave - E-commerce de Tecnologia  
+#🛒 TechWave - E-commerce de Tecnologia
 
-## 📌 Sobre o Projeto  
-O TechWave é um e-commerce especializado em tecnologia, oferecendo produtos como notebooks, hardware, periféricos e acessórios gamer.  
-A plataforma permite que clientes realizem compras, adicionando produtos ao carrinho de compras e finalizando pedidos com diferentes formas de pagamento.  
+##📌 Sobre o Projeto
 
----
+O **TechWave** é um e-commerce especializado em tecnologia que oferece uma ampla gama de produtos, como notebooks, hardware, periféricos e acessórios gamer. O sistema foi desenvolvido para proporcionar uma experiência de compra otimizada, com gestão eficiente de produtos, controle rigoroso de estoque e acompanhamento completo dos pedidos, tanto para clientes quanto para administradores.
 
-## 🔹 Funcionalidades do Sistema  
-✔ Clientes podem se cadastrar, adicionar produtos ao carrinho e realizar pedidos.  
-✔ Administradores gerenciam produtos, categorias e acompanham pedidos.  
-✔ Cada produto pertence a uma categoria (exemplo: "Monitores", "Placas de Vídeo").  
-✔ Clientes possuem um carrinho de compras, onde podem adicionar vários produtos.  
-✔ Um pedido é gerado a partir do carrinho de compras e pode conter múltiplos itens.  
-✔ O pagamento pode ser realizado via cartão de crédito, boleto ou PIX, e possui um status de aprovação.  
-✔ Cada cliente pode cadastrar múltiplos endereços de entrega.  
-✔ O sistema mantém um histórico dos pedidos de cada cliente.  
-✔ **Política de Estoque:** O sistema controla a disponibilidade dos produtos para evitar compras de itens esgotados.  
-✔ **Notificações de Status de Pedido:** Clientes recebem notificações sobre mudanças no status do pedido ("Pedido confirmado", "Pedido enviado", "Pedido entregue" etc.).  
+##🔹Funcionalidades do Sistema
 
----
+- **Cadastro e Autenticação**
+  - Clientes podem se cadastrar, gerenciar seus dados e cadastrar múltiplos endereços de entrega.
+  - Administradores têm acesso às funções de gerenciamento do catálogo e acompanhamento dos pedidos.
 
-## 🔹 Regras de Negócio  
-✔ Cada cliente possui um único carrinho, mas pode adicionar múltiplos produtos a ele.  
-✔ Um produto pode estar presente em vários carrinhos ao mesmo tempo.  
-✔ Cada pedido tem um pagamento vinculado, que pode estar em um dos seguintes estados:  
-  - `"Pendente"`  
-  - `"Aprovado"`  
-  - `"Recusado"`  
-✔ Administradores podem adicionar, editar e remover produtos do catálogo.  
-✔ Os produtos possuem imagens associadas, permitindo um melhor detalhamento visual.  
-✔ As categorias podem ser auto-relacionadas, permitindo subcategorias (exemplo: "Hardware" → "Placas de Vídeo").  
+- **Gerenciamento de Produtos e Categorias**
+  - Cada produto possui informações detalhadas, como nome, descrição, preço, imagens e controle de estoque.
+  - Produtos são organizados em categorias (ex.: "Monitores", "Placas de Vídeo"), com suporte a subcategorias através de auto-relacionamento.
 
----
+- **Carrinho de Compras e Pedido**
+  - Cada cliente possui um carrinho de compras exclusivo, permitindo adicionar múltiplos produtos.
+  - Ao finalizar o carrinho, é gerado um pedido que consolida os itens, suas quantidades e o valor total da compra.
+  - O sistema mantém o histórico de pedidos para cada cliente.
 
-### **📌 Política de Estoque:**  
-✔ Produtos possuem um estoque mínimo e um estoque disponível.  
-✔ Se um produto estiver sem estoque, ele não pode ser adicionado ao carrinho.  
-✔ Caso o estoque acabe enquanto o produto estiver no carrinho, o cliente será notificado para remover o item antes de finalizar a compra.  
+- **Pagamento**
+  - Os pedidos podem ser finalizados utilizando diferentes métodos de pagamento: cartão de crédito, boleto ou PIX.
+  - Cada pagamento é registrado com um status que pode ser "Pendente", "Aprovado" ou "Recusado".
 
----
+- **Controle de Estoque**
+  - O sistema gerencia a disponibilidade dos produtos, impedindo a adição ao carrinho de itens que estejam esgotados.
+  - Caso o estoque se esgote durante o processo de compra, o cliente é notificado para ajustar sua seleção.
 
-### **📌 Notificações de Status do Pedido:**  
-✔ Clientes recebem notificações automáticas via email e painel do usuário sempre que houver uma atualização no status do pedido.  
-✔ Os status possíveis são:  
-  - `"Pagamento Confirmado"`  
-  - `"Pedido em Processamento"`  
-  - `"Pedido Enviado"`  
-  - `"Pedido Entregue"`  
+- **Notificações de Status do Pedido**
+  - Clientes recebem notificações automáticas, tanto por e-mail quanto via painel do usuário, informando sobre:
+    - "Pagamento Confirmado"
+    - "Pedido em Processamento"
+    - "Pedido Enviado"
+    - "Pedido Entregue"
 
----
+##🔹Regras de Negócio
 
-## 🔹 Estrutura do Banco de Dados  
-O banco de dados do **TechWave** foi modelado para garantir eficiência e escalabilidade, contemplando:  
+- Cada cliente possui um único carrinho de compras, podendo adicionar múltiplos produtos.
+- Um produto pode estar presente em vários carrinhos simultaneamente.
+- Cada pedido está vinculado a um pagamento, que deve ter um status definido ("Pendente", "Aprovado" ou "Recusado").
+- Administradores podem adicionar, editar e remover produtos do catálogo.
+- As categorias podem ser auto-relacionadas, permitindo a criação de subcategorias.
+- O sistema controla o estoque de forma rigorosa, garantindo que apenas produtos disponíveis possam ser adquiridos.
 
----
+##🔹Estrutura do Banco de Dados
 
-✅ **Herança entre `Usuário`, `Cliente` e `Administrador`.**  
-✅ **Relacionamento entre `Cliente`, `Produto` e `Carrinho_compra` para gerenciamento das compras.**  
-✅ **Atributos compostos em `Endereco` (Rua, Número, Bairro, Cidade, Estado, CEP).**  
-✅ **Relacionamento N:N entre `Pedido` e `Produto` com um atributo `quantidade`.**  
-✅ **Controle de estoque em `Produto`, garantindo que pedidos sejam realizados apenas para itens disponíveis.**  
-✅ **Tabela `Notificação`, vinculada ao Cliente através da tabela `Cliente_Notificacao`, permitindo acompanhar quais notificações foram recebidas e lidas.**  
+O banco de dados do TechWave foi modelado para garantir eficiência e escalabilidade, conforme os seguintes aspectos:
 
----
+- **Herança**
+  - Implementação de herança para as entidades Usuário, Cliente e Administrador.
 
-## 📌 Conclusão  
-O TechWave foi projetado para proporcionar uma experiência de compra otimizada para clientes, garantindo uma gestão eficiente de produtos e pedidos.  
-Com a **Política de Estoque** e o **Sistema de Notificações de Status de Pedido**, o e-commerce se torna mais dinâmico e confiável.  
+- **Relacionamentos**
+  - Associação entre Cliente, Produto e Carrinho de Compras para gerenciamento das compras.
+  - Relação N:N entre Pedido e Produto, com atributo adicional para registrar a quantidade de cada item.
+  - Associação entre Cliente e Notificação, por meio de uma tabela intermediária (Cliente_Notificacao), para controle de notificações recebidas e lidas.
 
----
+- **Atributos Compostos**
+  - A entidade **Endereço** é composta por atributos como rua, número, bairro, cidade, estado e CEP.
 
-## 🛠️ Tecnologias Utilizadas  
-✔ **Linguagem:** Java  
-✔ **Banco de Dados:** MySQL  
-✔ **Frameworks:** SpringBoot e React.js 
+- **Controle de Estoque**
+  - Produtos possuem tanto um estoque mínimo quanto um estoque disponível, garantindo a integridade do processo de compra.
 
----
+##🔹Tecnologias Utilizadas
+
+- **Linguagem:** Java
+- **Banco de Dados:** MySQL
+- **Frameworks:** SpringBoot e React.js
+
+##🔹Considerações Finais
+
+O projeto TechWave integra os modelos conceitual e lógico para refletir de forma precisa as regras de negócio e os processos essenciais do e-commerce. Com foco na experiência do usuário e na eficiência operacional, o sistema oferece uma plataforma robusta que facilita a gestão de produtos e pedidos, garantindo segurança e confiabilidade para clientes e administradores.
 
 ##  💡 Modelo conceitual
 
