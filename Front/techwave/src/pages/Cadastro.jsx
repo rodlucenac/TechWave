@@ -49,7 +49,6 @@ export default function Cadastro() {
       <Header />
       <main className={styles.main}>
         <div className={styles.loginCard}>
-          {/* Botão de voltar */}
           <button
             type="button"
             className={styles.backButton}
@@ -60,7 +59,6 @@ export default function Cadastro() {
 
           <h1 className={styles.heading}>CADASTRE-SE</h1>
 
-          {/* Seção de Dados da Conta */}
           <section className={styles.section}>
             <h2 className={styles.subheading}>Dados da Conta</h2>
             {erro && <div className={styles.error}>{erro}</div>}
@@ -84,7 +82,7 @@ export default function Cadastro() {
                 />
               </div>
               <div className={styles.gridItem}>
-                <label>E‑mail</label>
+                <label>E-mail</label>
                 <input
                   type="email"
                   value={email}
@@ -115,7 +113,7 @@ export default function Cadastro() {
 
           <div className={styles.divider}></div>
 
-          {/* Seção de Endereço */}
+          {/* Seção de endereço */}
           <section className={styles.section}>
             <h2 className={styles.subheading}>Endereço</h2>
             <div className={styles.grid}>

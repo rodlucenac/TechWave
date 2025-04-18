@@ -25,7 +25,6 @@
   box-sizing: border-box;
 }
 
-/* Botão Voltar em formato pill */
 .backButton {
   display: inline-flex;
   align-items: center;
@@ -64,7 +63,6 @@
   margin-bottom: 1.5rem;
 }
 
-/* Seções */
 .section {
   margin-bottom: 1.5rem;
 }
@@ -82,7 +80,6 @@
   font-size: 0.95rem;
 }
 
-/* Separador */
 .divider {
   height: 1px;
   background: #ddd;
@@ -90,7 +87,6 @@
   border: none;
 }
 
-/* Grid de inputs */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -130,7 +126,6 @@
   outline: none;
 }
 
-/* Botão Continuar */
 .button {
   margin-top: 1rem;
   width: 100%;

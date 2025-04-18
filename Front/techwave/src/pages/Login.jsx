@@ -1,4 +1,3 @@
-// src/pages/Login.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
@@ -19,7 +18,7 @@ export default function Login() {
         u => u.email === email && u.senha === senha
       );
       if (!usuario) {
-        setErro('E‑mail ou senha incorretos');
+        setErro('E-mail ou senha incorretos');
         return;
       }
       localStorage.setItem('usuarioLogado', JSON.stringify(usuario));
@@ -33,10 +32,7 @@ export default function Login() {
     <>
       <Header />
       <main className={styles.main}>
-        {/* Área para banner/promocional (pode deixar vazia ou inserir imagem) */}
-        <div className={styles.hero}></div>
-
-        {/* Card de login */}
+        
         <div className={styles.loginWrapper}>
           <div className={styles.loginCard}>
             <h1 className={styles.heading}>ACESSE SUA CONTA</h1>
@@ -45,7 +41,7 @@ export default function Login() {
 
             <form onSubmit={handleSubmit} className={styles.form}>
               <div className={styles.inputGroup}>
-                <label htmlFor="email">E‑mail</label>
+                <label htmlFor="email">E-mail</label>
                 <input
                   id="email"
                   type="email"
@@ -71,7 +67,34 @@ export default function Login() {
               <button type="submit" className={styles.button}>
                 Entrar
               </button>
+
+              <a href="#!" className={styles.forgot}>
+                Esqueceu a senha?
+              </a>
             </form>
+
+            <div className={styles.divider}>
+              <span>OU</span>
+            </div>
+
+            <div className={styles.socials}>
+              <button className={styles.socialButton}>
+                <span className={styles.socialIcon}>G</span> Google
+              </button>
+              <button className={styles.socialButton}>
+                <span className={styles.socialIcon}></span> Apple
+              </button>
+            </div>
+
+            <p className={styles.signupText}>
+              Novo no TechWave?{' '}
+              <span
+                className={styles.signupLink}
+                onClick={() => navigate('/cadastro')}
+              >
+                Cadastre-se
+              </span>
+            </p>
           </div>
         </div>
       </main>

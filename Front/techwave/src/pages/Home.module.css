@@ -1,49 +1,73 @@
-/* Container geral dividindo sidebar e main */
-.container {
+.page {
   display: flex;
-  background: var(--color-bg);
+  position: relative;
 }
 
-/* Sidebar */
-.sidebar {
-  width: 200px;
-  background: #ffffff;
-  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
-  padding: 1rem 0;
+.page.sidebarOpen .sidebar {
+  transform: translateX(0);
 }
+.page.sidebarOpen .main {
+  margin-left: 200px;
+}
+
+.toggleButton {
+  position: fixed;
+  top: 70px;
+  left: 20px;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.sidebar {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 200px;
+  height: calc(100vh - 60px);
+  background: #ffffff;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  z-index: 999;
+}
+
 .menu {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 1rem 0;
 }
 .menuItem {
   padding: 0.75rem 1rem;
   color: var(--color-text);
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, color 0.2s;
 }
 .menuItem:hover {
   background: var(--color-secondary);
   color: #fff;
 }
 
-/* Main */
 .main {
   flex: 1;
+  margin-top: 60px;
   padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  transition: margin-left 0.3s ease;
+  background: var(--color-bg);
 }
 
-/* Header interno da página */
 .pageHeader {
   font-size: 1.5rem;
   font-weight: 600;
   color: var(--color-primary);
+  margin-bottom: 1rem;
 }
 
-/* Carousel placeholder */
 .carousel {
   background: #ffffff;
   height: 250px;
@@ -54,26 +78,55 @@
   justify-content: center;
   color: #888;
   font-size: 1.25rem;
+  margin-bottom: 1.5rem;
 }
 
-/* Grid de produtos */
 .products {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 1rem;
 }
+
 .productCard {
   background: #ffffff;
-  height: 200px;
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-text);
+  flex-direction: column;
+  transition: transform 0.2s;
+}
+.productCard:hover {
+  transform: translateY(-4px);
 }
 
-/* Footer */
+.productImage {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+
+.productInfo {
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.productName {
+  font-size: 1rem;
+  color: var(--color-text);
+  margin: 0 0 0.5rem;
+  flex: 1;
+}
+
+.productPrice {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  margin: 0;
+}
+
 .footer {
   background: var(--color-primary);
   color: #fff;

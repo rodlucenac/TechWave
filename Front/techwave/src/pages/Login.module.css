@@ -4,14 +4,11 @@
   background: var(--color-bg);
 }
 
-/* coluna esquerda */
 .hero {
   flex: 2;
   background: #fff;
-  /* background: url('/banner.jpg') center/cover no-repeat; */
 }
 
-/* coluna direita */
 .loginWrapper {
   flex: 1;
   display: flex;

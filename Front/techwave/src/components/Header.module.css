@@ -1,7 +1,15 @@
+:root {
+  --color-primary: #1E40AF;
+  --color-secondary: #3B82F6;
+  --color-accent: #F59E0B;
+  --color-bg: #F3F4F6;
+  --color-text: #1F2937;
+}
+
 .header {
   width: 100%;
   height: 60px;
-  background: var(--color-primary);   /* #1E40AF */
+  background: var(--color-primary);
   display: flex;
   align-items: center;
   padding: 0 24px;
@@ -10,7 +18,11 @@
 }
 
 .title {
-  color: var(--color-accent);         /* #F59E0B */
+  color: var(--color-accent);
   font-size: 1.25rem;
   font-weight: 700;
+}
+
+.button {
+  background: var(--color-primary);
 }
