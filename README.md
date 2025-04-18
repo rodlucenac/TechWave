@@ -85,12 +85,12 @@ Com a **Política de Estoque** e o **Sistema de Notificações de Status de Pedi
 
 ##  💡 Modelo conceitual
 
-![Conceitual TechWave foto](https://github.com/user-attachments/assets/061bb944-12ae-4233-9d61-40240b5468e2)
+![Conceitual TechWave](<Conceitual TechWave.png>)
 
 ---
 
 ## 🧠 Modelo lógico
 
-![Logico TechWave foto](https://github.com/user-attachments/assets/b8cd6a4b-fc68-4526-af67-77c39c7bade1)
+![Lógico Techwave](<Lógico TechWave.png>)
 
 ---

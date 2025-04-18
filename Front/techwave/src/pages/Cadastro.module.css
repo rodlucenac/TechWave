@@ -1,0 +1,150 @@
+:root {
+  --color-primary: #1E40AF;
+  --color-secondary: #3B82F6;
+  --color-accent: #F59E0B;
+  --color-bg: #F3F4F6;
+  --color-text: #1F2937;
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  min-height: calc(100vh - 60px);
+  background: var(--color-bg);
+  padding: 2rem 1rem;
+}
+
+.loginCard {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(31,41,55,0.1);
+  padding: 2rem;
+  width: 100%;
+  max-width: 600px;
+  box-sizing: border-box;
+}
+
+/* Botão Voltar em formato pill */
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--color-accent);
+  border: var(--color-accent);
+  border-radius: 9999px;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, transform 0.1s;
+  margin-bottom: 1.5rem;
+}
+
+.backButton:hover {
+  background: var(--color-primary);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.backButton:active {
+  transform: translateY(0);
+}
+
+.backIcon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.heading {
+  text-align: center;
+  font-size: 1.75rem;
+  color: var(--color-primary);
+  margin-bottom: 1.5rem;
+}
+
+/* Seções */
+.section {
+  margin-bottom: 1.5rem;
+}
+
+.subheading {
+  font-size: 1.25rem;
+  color: var(--color-primary);
+  margin-bottom: 0.75rem;
+}
+
+.error {
+  color: #e74c3c;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+/* Separador */
+.divider {
+  height: 1px;
+  background: #ddd;
+  margin: 1rem 0;
+  border: none;
+}
+
+/* Grid de inputs */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.gridItem,
+.gridItemFull {
+  display: flex;
+  flex-direction: column;
+}
+
+.gridItemFull {
+  grid-column: 1 / -1;
+}
+
+.gridItem label,
+.gridItemFull label {
+  margin-bottom: 0.25rem;
+  font-size: 0.9rem;
+  color: var(--color-text);
+}
+
+.gridItem input,
+.gridItemFull input {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.gridItem input:focus,
+.gridItemFull input:focus {
+  border-color: var(--color-primary);
+  outline: none;
+}
+
+/* Botão Continuar */
+.button {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 0.85rem;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.button:hover {
+  background: var(--color-secondary);
+}
