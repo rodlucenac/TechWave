@@ -1,7 +1,7 @@
--- Crie (se ainda não existir) o usuário da aplicação:
+-- Criar o usuário da aplicação:
 CREATE USER 'appuser'@'localhost' IDENTIFIED BY 'senhaForteAqui';
 
--- Conceda todos os privilégios que o backend vai precisar no schema TechWave:
+-- Conceder todos os privilégios que o backend vai precisar:
 GRANT 
   SELECT,
   INSERT,
@@ -136,7 +136,6 @@ CREATE TABLE Favorito (
 
 -- Scripts de inserção
 
--- Endereços para os administradores
 INSERT INTO Endereco (rua, numero, bairro, cidade, estado, cep) VALUES
   ('Av. Paulista',      '1000', 'Bela Vista',   'São Paulo', 'SP', '01310-100'),
   ('Rua das Flores',     '200', 'Jardim',       'Curitiba',  'PR', '80010-020'),
@@ -144,7 +143,7 @@ INSERT INTO Endereco (rua, numero, bairro, cidade, estado, cep) VALUES
   ('Rua XV de Novembro', '150', 'Centro',       'Porto Alegre','RS','80020-310'),
   ('Av. Pernambuco',    '5000', 'Boa Viagem',   'Recife',    'PE', '51020-010');
 
--- Usuários + Administradores
+
 INSERT INTO Usuario (nome, email, senha, cpf, endereco_id) VALUES
   ('Alice Silva',  'alice@techwave.com', 'senha123', '123.456.789-00', 1),
   ('Bruno Costa',  'bruno@techwave.com', 'senha123', '234.567.890-11', 2),
@@ -159,7 +158,7 @@ INSERT INTO Administrador (id_usuario, cargo) VALUES
   (4, 'Operações'),
   (5, 'Marketing');
 
--- Categorias de produtos
+
 INSERT INTO Categoria (id_categoria , nome, descricao) VALUES
   (1, 'Hardware',      'Componentes e periféricos de computador'),
   (2, 'Software',      'Sistemas operacionais e aplicativos'),
@@ -167,7 +166,7 @@ INSERT INTO Categoria (id_categoria , nome, descricao) VALUES
   (4, 'Gamer',         'Acessórios e periféricos para jogos'),
   (5, 'Armazenamento', 'Dispositivos de armazenamento (HD, SSD, pendrives)');
 
--- 5 produtos de exemplo
+
 INSERT INTO Produto (nome, descricao, estoque, preco, imagem_blob, imagem_nome) VALUES
   ('SSD 1TB Samsung EVO',     'SSD NVMe 1TB de alta velocidade',         120, 529.90, LOAD_FILE("C:\Users\digol\Documents\Imagens Techwave\SSD1TBsansumg.jpg"), 'ssd1tb.jpg'),
   ('Teclado Mecânico RGB',    'Teclado mecânico com switches Azuis e LED RGB',  75, 349.90, LOAD_FILE("C:\Users\digol\Documents\Imagens Techwave\tecladoRGBMec.jpg"), 'teclado_rgb.jpg'),
@@ -176,13 +175,13 @@ INSERT INTO Produto (nome, descricao, estoque, preco, imagem_blob, imagem_nome) 
   ('Placa de Captura 4K',     'Placa de captura externa HDMI 4K',        30, 1199.00, LOAD_FILE("C:\Users\digol\Documents\Imagens Techwave\placaDeCaptura4k.jpg"), 'captura4k.jpg');
 
  
--- Hardware é pai de Gamer, Redes e Armazenamento
+
 INSERT INTO Pertence (categoria1_id, categoria2_id)
 SELECT p.id_categoria, c.id_categoria
   FROM Categoria p
   JOIN Categoria c 
-    ON p.nome = 'Hardware'    -- categoria pai
-   AND c.nome = 'Gamer';      -- categoria filha
+    ON p.nome = 'Hardware'    
+   AND c.nome = 'Gamer';      
 
 INSERT INTO Pertence (categoria1_id, categoria2_id)
 SELECT p.id_categoria, c.id_categoria
@@ -198,7 +197,7 @@ SELECT p.id_categoria, c.id_categoria
     ON p.nome = 'Hardware'
    AND c.nome = 'Armazenamento';
 
--- Software é pai de Windows (se existir)
+
 INSERT INTO Pertence (categoria1_id, categoria2_id)
 SELECT p.id_categoria, c.id_categoria
   FROM Categoria p
