@@ -27,14 +27,12 @@ public class UsuarioService {
 
   @Transactional
   public void criarUsuario(Usuario usuario) {
-    // Validação simples
     if (usuario.getNome() == null || usuario.getNome().trim().isEmpty()) {
       throw new IllegalArgumentException("O nome do usuário não pode ser vazio.");
     }
     if (usuario.getEmail() == null || usuario.getEmail().trim().isEmpty()) {
       throw new IllegalArgumentException("O email do usuário não pode ser vazio.");
     }
-    // Encripta a senha antes de salvar
     //usuario.setSenha(encoder.encode(usuario.getSenha()));
     usuarioRepository.inserirUsuario(usuario);
   }

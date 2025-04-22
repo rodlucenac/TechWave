@@ -10,7 +10,7 @@ import br.com.projeto.api.model.Administrador;
 import br.com.projeto.api.service.AdministradorService;
 
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/admin")
 public class AdministradorController {
 
   @Autowired

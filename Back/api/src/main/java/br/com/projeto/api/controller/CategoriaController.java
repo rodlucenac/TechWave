@@ -16,7 +16,7 @@ import br.com.projeto.api.model.Categoria;
 import br.com.projeto.api.service.CategoriaService;
 
 @RestController
-@RequestMapping("/api/categorias")
+@RequestMapping("/categorias")
 public class CategoriaController {
 
   @Autowired

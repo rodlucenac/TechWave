@@ -10,6 +10,22 @@ export default function Login() {
   const [erro, setErro] = useState('');
   const navigate = useNavigate();
 
+  const getCliente = async(user) => {
+    const res = await api.get('/clientes');
+      const cliente = res.data.find(
+        c => user.idUsuario === c.idUsuario
+      );
+      return cliente;
+
+  }
+  const getAdmin = async(user) => {
+    const res = await api.get('/admin');
+      const admin = res.data.find(
+        a => user.idUsuario === a.idUsuario
+      );
+      return admin;
+  }
+
   const handleSubmit = async e => {
     e.preventDefault();
     try {
@@ -22,10 +38,23 @@ export default function Login() {
         return;
       }
       localStorage.setItem('usuario Logado', JSON.stringify(usuario));
+      console.log('usario',  JSON.stringify(usuario));
+      const cliente = getCliente(usuario);
+      const admin = getAdmin(usuario);
+      if (!!cliente){
+        localStorage.setItem(`Cliente`, JSON.stringify(cliente));
+      }
+      else if (!!admin){
+      localStorage.setItem(`Administrador`, JSON.stringify(admin));
+    
+      }
+      
       navigate('/');
-    } catch {
+    } catch(error) {
+      console.log("ERROR", error);
       setErro('Erro ao conectar com o servidor');
     }
+
   };
 
   return (

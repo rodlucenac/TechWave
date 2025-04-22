@@ -10,7 +10,10 @@ import styles from './Home.module.css';
 export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [produtos, setProdutos]       = useState([]);
-  const user = JSON.parse(localStorage.getItem('user')); 
+  const user = JSON.parse(localStorage.getItem('user'));
+
+  const cliente = JSON.parse(localStorage.getItem('cliente'));
+  const admin = JSON.parse(localStorage.getItem('administrador'));
 
   useEffect(() => {
     api.get('/produtos')
@@ -41,7 +44,6 @@ export default function Home() {
     <>
       <Header />
 
-      {/* Botão do menu que se desloca junto com a sidebar */}
       <button 
         className={`${styles.menuButton} ${sidebarOpen ? styles.menuButtonShifted : ''}`} 
         onClick={() => setSidebarOpen(o => !o)}
@@ -51,12 +53,12 @@ export default function Home() {
 
       <aside className={`${styles.sidebar} ${sidebarOpen ? styles.open : ''}`}>
         {!user && (
-          <>
-            <Link to="/login">Login</Link>
-            <Link to="/cadastro">Cadastrar‑se</Link>
-          </>
+         <>
+          <Link to="/Login">Login</Link>
+          <Link to="/Cadastro">Cadastre-se</Link>
+       </>
         )}
-        {user && user.role === 'CLIENT' && (
+        {!!cliente && (
           <>
             <Link to="/meu-perfil">Minha Conta</Link>
             <Link to="/meus-pedidos">Meus Pedidos</Link>
@@ -64,7 +66,7 @@ export default function Home() {
             <Link to="/notificacoes">Notificações</Link>
           </>
         )}
-        {user && user.role === 'ADMIN' && (
+        {!!admin &&(
           <>
             <Link to="/produtos">Lista de Produtos</Link>
             <Link to="/produtos/novo">Adicionar Produto</Link>

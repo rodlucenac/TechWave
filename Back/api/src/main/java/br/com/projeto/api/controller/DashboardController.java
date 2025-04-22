@@ -1,17 +1,21 @@
 package br.com.projeto.api.controller;
 
-import br.com.projeto.api.dto.PedidoPorDiaDTO;
-import br.com.projeto.api.dto.PedidoStatusDTO;
-import br.com.projeto.api.dto.PagamentoStatusDTO;
-import br.com.projeto.api.dto.ProdutoFavoritoDTO;
-import br.com.projeto.api.dto.NotificacaoResumoDTO;
-import br.com.projeto.api.service.DashboardService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import br.com.projeto.api.dto.NotificacaoResumoDTO;
+import br.com.projeto.api.dto.PagamentoStatusDTO;
+import br.com.projeto.api.dto.PedidoPorDiaDTO;
+import br.com.projeto.api.dto.PedidoStatusDTO;
+import br.com.projeto.api.dto.ProdutoFavoritoDTO;
+import br.com.projeto.api.service.DashboardService;
+
 @RestController
-@RequestMapping("/api/dashboard")
+@RequestMapping("/dashboard")
 public class DashboardController {
 
   @Autowired
