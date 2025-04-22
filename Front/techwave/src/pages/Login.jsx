@@ -21,7 +21,7 @@ export default function Login() {
         setErro('E-mail ou senha incorretos');
         return;
       }
-      localStorage.setItem('usuarioLogado', JSON.stringify(usuario));
+      localStorage.setItem('usuario Logado', JSON.stringify(usuario));
       navigate('/');
     } catch {
       setErro('Erro ao conectar com o servidor');
