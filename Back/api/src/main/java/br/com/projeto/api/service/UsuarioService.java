@@ -1,12 +1,13 @@
 package br.com.projeto.api.service;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service; // Para encriptar a senha
+import org.springframework.transaction.annotation.Transactional;
+
 import br.com.projeto.api.model.Usuario;
 import br.com.projeto.api.repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder; // Para encriptar a senha
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
 
 @Service
 public class UsuarioService {
@@ -14,7 +15,7 @@ public class UsuarioService {
   @Autowired
   private UsuarioRepository usuarioRepository;
 
-  private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+  //private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
   public Usuario findByEmail(String email) {
     return usuarioRepository.findByEmail(email);
@@ -34,8 +35,7 @@ public class UsuarioService {
       throw new IllegalArgumentException("O email do usuário não pode ser vazio.");
     }
     // Encripta a senha antes de salvar
-    usuario.setSenha(encoder.encode(usuario.getSenha()));
-    usuario.setAtivo(true);
+    //usuario.setSenha(encoder.encode(usuario.getSenha()));
     usuarioRepository.inserirUsuario(usuario);
   }
 }

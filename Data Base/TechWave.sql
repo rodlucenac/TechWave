@@ -1,3 +1,22 @@
+-- Crie (se ainda não existir) o usuário da aplicação:
+CREATE USER 'appuser'@'localhost' IDENTIFIED BY 'senhaForteAqui';
+
+-- Conceda todos os privilégios que o backend vai precisar no schema TechWave:
+GRANT 
+  SELECT,
+  INSERT,
+  UPDATE,
+  DELETE,
+  CREATE,
+  ALTER,
+  DROP,
+  INDEX,
+  REFERENCES,
+  EXECUTE
+ON TechWave.* 
+TO 'appuser'@'localhost';
+
+FLUSH PRIVILEGES;
 CREATE DATABASE IF NOT EXISTS TechWave;
 USE TechWave;
 

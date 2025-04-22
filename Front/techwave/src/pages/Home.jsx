@@ -9,12 +9,13 @@ import styles from './Home.module.css';
 
 export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [produtos, setProdutos] = useState([]);
+  const [produtos, setProdutos]       = useState([]);
+  const user = JSON.parse(localStorage.getItem('user')); 
 
   useEffect(() => {
     api.get('/produtos')
-      .then(res => setProdutos(res.data))
-      .catch(err => console.error(err));
+       .then(res => setProdutos(res.data))
+       .catch(err => console.error(err));
   }, []);
 
   const promos = [
@@ -27,7 +28,7 @@ export default function Home() {
   const sliderSettings = {
     dots: true,
     infinite: true,
-    speed: 600,
+    speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
@@ -40,69 +41,67 @@ export default function Home() {
     <>
       <Header />
 
-      <div className={styles.container}>
-        <div className={`${styles.page} ${sidebarOpen ? styles.sidebarOpen : ''}`}>
-          <button
-            className={styles.toggleButton}
-            onClick={() => setSidebarOpen(o => !o)}
-          >
-            {sidebarOpen ? 'x' : '☰'}
-          </button>
+      {/* Botão do menu que se desloca junto com a sidebar */}
+      <button 
+        className={`${styles.menuButton} ${sidebarOpen ? styles.menuButtonShifted : ''}`} 
+        onClick={() => setSidebarOpen(o => !o)}
+      >
+        {sidebarOpen ? '✕' : '☰'}
+      </button>
 
-          <aside className={styles.sidebar}>
-            <nav>
-              <ul className={styles.menu}>
-                <li className={styles.menuItem}>Minha Conta</li>
-                <li className={styles.menuItem}>Meus Dados</li>
-                <li className={styles.menuItem}>Meus Pedidos</li>
-                <li className={styles.menuItem}>Favoritos</li>
-                <li className={styles.menuItem}>Notificações</li>
-              </ul>
-            </nav>
-          </aside>
+      <aside className={`${styles.sidebar} ${sidebarOpen ? styles.open : ''}`}>
+        {!user && (
+          <>
+            <Link to="/login">Login</Link>
+            <Link to="/cadastro">Cadastrar‑se</Link>
+          </>
+        )}
+        {user && user.role === 'CLIENT' && (
+          <>
+            <Link to="/meu-perfil">Minha Conta</Link>
+            <Link to="/meus-pedidos">Meus Pedidos</Link>
+            <Link to="/favoritos">Favoritos</Link>
+            <Link to="/notificacoes">Notificações</Link>
+          </>
+        )}
+        {user && user.role === 'ADMIN' && (
+          <>
+            <Link to="/produtos">Lista de Produtos</Link>
+            <Link to="/produtos/novo">Adicionar Produto</Link>
+            <Link to="/categorias">Lista de Categorias</Link>
+            <Link to="/categorias/novo">Adicionar Categoria</Link>
+          </>
+        )}
+      </aside>
 
-          <main className={styles.main}>
-
-            <div className={styles.carouselWrapper}>
-              <Slider {...sliderSettings} className={styles.carousel}>
-                {promos.map((url, idx) => (
-                  <div key={idx} className={styles.slide}>
-                    <img
-                      src={url}
-                      alt={`Promoção ${idx + 1}`}
-                      className={styles.slideImage}
-                    />
-                  </div>
-                ))}
-              </Slider>
-            </div>
-
-            <section className={styles.products}>
-              {produtos.map(p => (
-                <div key={p.id_produto} className={styles.productCard}>
-                  <Link to={`/produto/${p.id_produto}`}>
-                    <img
-                      src={`/images/${p.imagem_nome}`}
-                      alt={p.nome}
-                      className={styles.productImage}
-                    />
-                  </Link>
-                  <div className={styles.productInfo}>
-                    <h3 className={styles.productName}>{p.nome}</h3>
-                    <p className={styles.productPrice}>
-                      R$ {Number(p.preco).toFixed(2)}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </section>
-          </main>
+      <main className={`${styles.mainContent} ${sidebarOpen ? styles.shifted : ''}`}>
+        <div className={styles.sliderWrapper}>
+          <Slider {...sliderSettings}>
+            {promos.map((url, idx) => (
+              <div key={idx}>
+                <img 
+                  src={url} 
+                  alt={`Promoção ${idx + 1}`} 
+                  className={styles.promoImage} 
+                />
+              </div>
+            ))}
+          </Slider>
         </div>
 
-        <footer className={styles.footer}>
-          © 2025 TechWave. Todos os direitos reservados.
-        </footer>
-      </div>
+        <section className={styles.productsGrid}>
+          {produtos.map(p => (
+            <div key={p.id_produto} className={styles.productCard}>
+              <h3>{p.nome}</h3>
+              <p>R$ {Number(p.preco).toFixed(2)}</p>
+            </div>
+          ))}
+        </section>
+      </main>
+
+      <footer className={styles.footer}>
+        © 2025 TechWave. Todos os direitos reservados.
+      </footer>
     </>
   );
 }

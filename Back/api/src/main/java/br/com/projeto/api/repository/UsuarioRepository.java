@@ -1,11 +1,13 @@
 package br.com.projeto.api.repository;
 
-import br.com.projeto.api.model.Usuario;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import java.util.List;
+
+import br.com.projeto.api.model.Usuario;
 
 @Repository
 public class UsuarioRepository {
@@ -26,7 +28,7 @@ public class UsuarioRepository {
 
   public void inserirUsuario(Usuario usuario) {
     String sql = "INSERT INTO Usuario (nome, email, senha, cpf, endereco_id, ativo) VALUES (?, ?, ?, ?, ?, ?)";
-    jdbcTemplate.update(sql, usuario.getNome(), usuario.getEmail(), usuario.getSenha(), usuario.getCpf(), usuario.getEnderecoId(), usuario.isAtivo());
+    jdbcTemplate.update(sql, usuario.getNome(), usuario.getEmail(), usuario.getSenha(), usuario.getCpf(), usuario.getEnderecoId());
   }
 
 }

@@ -7,7 +7,6 @@ public class Usuario {
   private String senha;
   private String cpf;
   private int enderecoId;
-  private boolean ativo;
 
   // Getters e Setters
   public int getIdUsuario() {
@@ -45,11 +44,5 @@ public class Usuario {
   }
   public void setEnderecoId(int enderecoId) {
     this.enderecoId = enderecoId;
-  }
-  public boolean isAtivo() {
-    return ativo;
-  }
-  public void setAtivo(boolean ativo) {
-    this.ativo = ativo;
   }
 }

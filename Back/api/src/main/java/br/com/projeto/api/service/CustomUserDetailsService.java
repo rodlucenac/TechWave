@@ -1,4 +1,4 @@
-package br.com.projeto.api.service;
+/*package br.com.projeto.api.service;
 
 import java.util.Collections;
 
@@ -52,3 +52,4 @@ public class CustomUserDetailsService implements UserDetailsService {
     );
   }
 }
+*/
