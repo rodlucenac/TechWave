@@ -11,19 +11,12 @@ export default function Login() {
   const navigate = useNavigate();
 
   const getCliente = async(user) => {
-    const res = await api.get('/clientes');
-      const cliente = res.data.find(
-        c => user.idUsuario === c.idUsuario
-      );
-      return cliente;
-
+    const res = await api.get(`/clientes/${user.idUsuario}`);
+    return res.data;
   }
   const getAdmin = async(user) => {
-    const res = await api.get('/admin');
-      const admin = res.data.find(
-        a => user.idUsuario === a.idUsuario
-      );
-      return admin;
+    const res = await api.get(`/admin/${user.idUsuario}`);
+    return res.data;
   }
 
   const handleSubmit = async e => {
@@ -39,8 +32,8 @@ export default function Login() {
       }
       localStorage.setItem('usuario Logado', JSON.stringify(usuario));
       console.log('usario',  JSON.stringify(usuario));
-      const cliente = getCliente(usuario);
-      const admin = getAdmin(usuario);
+      const cliente = await getCliente(usuario);
+      const admin = await getAdmin(usuario);
       if (!!cliente){
         localStorage.setItem(`Cliente`, JSON.stringify(cliente));
       }

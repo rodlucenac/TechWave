@@ -4,6 +4,7 @@ import br.com.projeto.api.model.Cliente;
 import br.com.projeto.api.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 @Service
 public class ClienteService {
@@ -16,6 +17,10 @@ public class ClienteService {
   }
 
   public Cliente buscarPorId(int idUsuario) {
-    return clienteRepository.findById(idUsuario);
+    try {
+      return clienteRepository.findById(idUsuario);
+    } catch (EmptyResultDataAccessException e) {
+      return null;
+    }
   }
 }
