@@ -29,14 +29,36 @@ export default function Cadastro() {
       setErro('As senhas não coincidem');
       return;
     }
+    if (!rua || !numero || !bairro || !cidade || !estado || !cep) {
+      setErro('Preencha todos os campos de endereço.');
+      return;
+    }
+    if (cpf.length !== 11) {
+      setErro('CPF deve conter 11 caracteres.');
+      return;
+    }
+    if (cep.length !== 8) {
+      setErro('CEP deve conter 8 caracteres.');
+      return;
+    }
     try {
       const payload = {
-        nome,
-        email,
-        senha,
-        cpf,
-        endereco: { rua, numero, bairro, cidade, estado, cep }
+        usuario: {
+          nome,
+          email,
+          senha,
+          cpf
+        },
+        endereco: {
+          rua,
+          numero,
+          bairro,
+          cidade,
+          estado,
+          cep
+        }
       };
+
       await api.post('/usuarios/registro', payload);
       navigate('/login');
     } catch {
@@ -175,7 +197,7 @@ export default function Cadastro() {
             </div>
           </section>
 
-          <button type="submit" className={styles.button} onClick={handleSubmit}>
+          <button className={styles.button} onClick={handleSubmit}>
             CONTINUAR
           </button>
         </div>
