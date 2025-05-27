@@ -1,34 +1,37 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
+// src/pages/Home.jsx
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import Slider from 'react-slick';
 import api from '../services/api';
 import Header from '../components/Header';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styles from './Home.module.css';
-import { AuthContext } from '../contexts/AuthContext';
 
 export default function Home() {
+  const { user, logout } = useAuth();
+  const navigate         = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [produtos, setProdutos]       = useState([]);
-  const { user } = useContext(AuthContext);
-  const tipoUsuario = user?.tipo;
 
   useEffect(() => {
     api.get('/produtos')
        .then(res => setProdutos(res.data))
        .catch(err => console.error(err));
-       
   }, []);
-  
-  console.log('usuario', tipoUsuario, user);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login', { replace: true });
+  };
+
   const promos = [
     '/promos/perfil.jpg',
     '/promos/perfil.jpg',
     '/promos/perfil.jpg',
-    '/promos/perfil.jpg'
+    '/promos/perfil.jpg',
   ];
-
   const sliderSettings = {
     dots: true,
     infinite: true,
@@ -38,16 +41,16 @@ export default function Home() {
     autoplay: true,
     autoplaySpeed: 4000,
     arrows: true,
-    adaptiveHeight: true
+    adaptiveHeight: true,
   };
 
   return (
     <>
       <Header />
 
-      <button 
-        className={`${styles.menuButton} ${sidebarOpen ? styles.menuButtonShifted : ''}`} 
-        onClick={() => setSidebarOpen(o => !o)}
+      <button
+        className={`${styles.menuButton} ${sidebarOpen ? styles.menuButtonShifted : ''}`}
+        onClick={() => setSidebarOpen(open => !open)}
       >
         {sidebarOpen ? '✕' : '☰'}
       </button>
@@ -59,31 +62,30 @@ export default function Home() {
             <Link to="/cadastro">Cadastre-se</Link>
           </>
         )}
-        {tipoUsuario === 'cliente' && (
+
+        {user?.tipo === 'cliente' && (
           <>
-            {user?.nome && <p className={styles.sidebarUser}>Olá, {user.nome}</p>}
-            <Link to="/meu-perfil">Minha Conta</Link>
-            <Link to="/meus-pedidos">Meus Pedidos</Link>
-            <Link to="/meus-produtos">Meus Produtos</Link>
-            <Link to="/carrinho">Carrinho</Link>
-            <Link to="/favoritos">Favoritos</Link>
+            <Link to={`/clientes/${user.detalhes.idUsuario}`}>Minha Conta</Link>
+            <Link to="/meus-pedidos">Pedidos</Link>
+            <Link to="/favoritos">Produtos Favoritos</Link>
+            <Link to="/meus-dados">Meus Dados</Link>
             <Link to="/notificacoes">Notificações</Link>
+            <button className={styles.logoutButton} onClick={handleLogout}>
+              Sair
+            </button>
           </>
         )}
-        {tipoUsuario === 'admin' && (
+
+        {user?.tipo === 'admin' && (
           <>
-            {user?.nome && <p className={styles.sidebarUser}>Administrador: {user.nome}</p>}
-            <Link to="/produtos">Lista de Produtos</Link>
-            <Link to="/produtos/novo">Adicionar Produto</Link>
-            <Link to="/categorias">Lista de Categorias</Link>
-            <Link to="/categorias/novo">Adicionar Categoria</Link>
+            <Link to={`/admin/${user.detalhes.idUsuario}`}>Minha Conta</Link>
+            <Link to="/produtos">Gerenciar Produtos</Link>
+            <Link to="/categorias">Gerenciar Categorias</Link>
+            <Link to={`/admin/${user.detalhes.idUsuario}`}>Dashboards</Link>
+            <button className={styles.logoutButton} onClick={handleLogout}>
+              Sair
+            </button>
           </>
-        )}
-        {user && (
-          <button onClick={() => {
-            localStorage.clear();
-            window.location.reload();
-          }}>Sair</button>
         )}
       </aside>
 
@@ -92,10 +94,10 @@ export default function Home() {
           <Slider {...sliderSettings}>
             {promos.map((url, idx) => (
               <div key={idx}>
-                <img 
-                  src={url} 
-                  alt={`Promoção ${idx + 1}`} 
-                  className={styles.promoImage} 
+                <img
+                  src={url}
+                  alt={`Promoção ${idx + 1}`}
+                  className={styles.promoImage}
                 />
               </div>
             ))}

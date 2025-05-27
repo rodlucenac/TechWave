@@ -3,24 +3,23 @@ import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import api from '../services/api';
 import styles from './Login.module.css';
-
 import { AuthContext } from '../contexts/AuthContext';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [erro, setErro] = useState('');
-  const navigate = useNavigate();
-  const { login } = useContext(AuthContext);
+  const [email, setEmail]   = useState('');
+  const [senha, setSenha]   = useState('');
+  const [erro, setErro]     = useState('');
+  const navigate            = useNavigate();
+  const { login }           = useContext(AuthContext);
 
-  const getCliente = async(user) => {
+  const getCliente = async user => {
     const res = await api.get(`/clientes/${user.idUsuario}`);
     return res.data;
-  }
-  const getAdmin = async(user) => {
+  };
+  const getAdmin = async user => {
     const res = await api.get(`/admin/${user.idUsuario}`);
     return res.data;
-  }
+  };
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -33,8 +32,9 @@ export default function Login() {
         setErro('E-mail ou senha incorretos');
         return;
       }
+
       const cliente = await getCliente(usuario).catch(() => null);
-      const admin = await getAdmin(usuario).catch(() => null);
+      const admin   = await getAdmin(usuario).catch(() => null);
 
       if (cliente) {
         const usuarioLogado = { ...usuario, tipo: 'cliente', detalhes: cliente };
@@ -47,19 +47,16 @@ export default function Login() {
       } else {
         setErro('Usuário sem papel definido.');
       }
-      
-    } catch(error) {
-      console.log("ERROR", error);
+    } catch (error) {
+      console.error(error);
       setErro('Erro ao conectar com o servidor');
     }
-
   };
 
   return (
     <>
       <Header />
       <main className={styles.main}>
-        
         <div className={styles.loginWrapper}>
           <div className={styles.loginCard}>
             <h1 className={styles.heading}>ACESSE SUA CONTA</h1>

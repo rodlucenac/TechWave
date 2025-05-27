@@ -1,10 +1,11 @@
 package br.com.projeto.api.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.com.projeto.api.model.Produto;
 import br.com.projeto.api.repository.ProdutoRepository;
@@ -12,35 +13,50 @@ import br.com.projeto.api.repository.ProdutoRepository;
 @Service
 public class ProdutoService {
 
-  @Autowired
-  private ProdutoRepository produtoRepository;
+  private final ProdutoRepository repo;
+  public ProdutoService(ProdutoRepository repo) {
+    this.repo = repo;
+  }
 
-  // Lista todos os produtos
   public List<Produto> listarProdutos() {
-    return produtoRepository.findAll();
+    return repo.findAll();
   }
 
-  // Cria um novo produto com validações básicas
   @Transactional
-  public void criarProduto(Produto produto) {
-    if (produto.getNome() == null || produto.getNome().trim().isEmpty()) {
-      throw new IllegalArgumentException("O nome do produto não pode ser vazio.");
-    }
-    // Outras validações podem ser adicionadas aqui.
-    produtoRepository.inserirProduto(produto);
+  public void criarProduto(
+      String nome,
+      String descricao,
+      Integer estoque,
+      BigDecimal preco,
+      MultipartFile img
+  ) {
+    Produto p = new Produto();
+    p.setNome(nome);
+    p.setDescricao(descricao);
+    p.setEstoque(estoque);
+    p.setPreco(preco);
+    repo.inserirProduto(p, img);
   }
 
-  // Atualiza um produto existente
   @Transactional
-  public void atualizarProduto(int id, Produto produto) {
-    // Aqui você pode adicionar validações ou verificações extras
-    produtoRepository.atualizarProduto(id, produto);
+  public void atualizarProduto(
+      int id,
+      String nome,
+      String descricao,
+      Integer estoque,
+      BigDecimal preco,
+      MultipartFile img
+  ) {
+    Produto p = new Produto();
+    p.setNome(nome);
+    p.setDescricao(descricao);
+    p.setEstoque(estoque);
+    p.setPreco(preco);
+    repo.atualizarProduto(id, p, img);
   }
 
-  // Remove um produto
   @Transactional
   public void removerProduto(int id) {
-    // Verifique, por exemplo, se o produto não está associado a pedidos ativos antes de remover.
-    produtoRepository.deletarProduto(id);
-    }
+    repo.deletarProduto(id);
+  }
 }

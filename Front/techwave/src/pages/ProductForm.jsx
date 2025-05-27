@@ -1,13 +1,23 @@
-import React, { useState, useEffect } from 'react';
+// src/pages/ProductForm.jsx
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import api from '../services/api';
 import Header from '../components/Header';
 import styles from './ProductForm.module.css';
 
 export default function ProductForm() {
+  const { user } = useAuth();
   const { id } = useParams();
   const isEdit = Boolean(id);
   const navigate = useNavigate();
+
+  // redirect non-admins
+  useEffect(() => {
+    if (!user || user.tipo !== 'admin') {
+      navigate('/login', { replace: true });
+    }
+  }, [user, navigate]);
 
   const [form, setForm] = useState({
     nome: '',
@@ -20,36 +30,34 @@ export default function ProductForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Carrega dados para edição
+  // load existing product for edit
   useEffect(() => {
-    if (isEdit) {
-      setLoading(true);
-      api.get(`/produtos/${id}`)
-        .then(res => {
-          const data = res.data;
-          setForm({
-            nome: data.nome,
-            descricao: data.descricao,
-            estoque: data.estoque,
-            preco: data.preco
-          });
-          // se houver URL de imagem no registro
-          if (data.imagem) {
-            setPreviewUrl(data.imagem);
-          }
-        })
-        .catch(err => setError(err))
-        .finally(() => setLoading(false));
-    }
+    if (!isEdit) return;
+    setLoading(true);
+    api.get(`/produtos/${id}`)
+       .then(res => {
+         const data = res.data;
+         setForm({
+           nome: data.nome,
+           descricao: data.descricao,
+           estoque: data.estoque,
+           preco: data.preco
+         });
+         if (data.imagem) {
+           setPreviewUrl(data.imagem);
+         }
+       })
+       .catch(err => setError(err))
+       .finally(() => setLoading(false));
   }, [id, isEdit]);
 
-  // Atualiza campos de texto
+  // handle text inputs
   const handleChange = e => {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
   };
 
-  // Seleciona arquivo e define preview
+  // handle file input + preview
   const handleFileChange = e => {
     const chosen = e.target.files[0];
     if (chosen) {
@@ -58,7 +66,7 @@ export default function ProductForm() {
     }
   };
 
-  // Envio do formulário
+  // submit via multipart/form-data
   const handleSubmit = async e => {
     e.preventDefault();
     setLoading(true);

@@ -268,8 +268,10 @@ CREATE PROCEDURE sp_inserir_produto (
     IN p_imagem_nome VARCHAR(255)
 )
 BEGIN
-    INSERT INTO Produto (nome, descricao, estoque, preco, imagem_blob, imagem_nome)
-    VALUES (p_nome, p_descricao, p_estoque, p_preco, p_imagem_blob, p_imagem_nome);
+    INSERT INTO Produto 
+      (nome, descricao, estoque, preco, imagem_blob, imagem_nome)
+    VALUES 
+      (p_nome, p_descricao, p_estoque, p_preco, p_imagem_blob, p_imagem_nome);
 END//
 
 CREATE PROCEDURE sp_atualizar_produto (
