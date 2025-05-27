@@ -16,10 +16,13 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/cadastro" element={<Cadastro />} />
       <Route path="/" element={<Home />} />
+      <Route path="/clientes/:idUsuario" element={<Home />} />
+      <Route path="/admin/:idUsuario" element={<Home />} />
 
       <Route path="/produtos" element={<ProductsList />} />
       <Route path="/produtos/novo" element={<ProductForm />} />
       <Route path="/produtos/:id/editar" element={<ProductForm />} />
+      
 
       <Route path="/categorias" element={<CategoriesList />} />
       <Route path="/categorias/novo" element={<CategoryForm />} />

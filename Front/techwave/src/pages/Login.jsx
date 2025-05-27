@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import api from '../services/api';
 import styles from './Login.module.css';
+
+import { AuthContext } from '../contexts/AuthContext';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [erro, setErro] = useState('');
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const getCliente = async(user) => {
     const res = await api.get(`/clientes/${user.idUsuario}`);
@@ -30,17 +33,17 @@ export default function Login() {
         setErro('E-mail ou senha incorretos');
         return;
       }
-      localStorage.setItem('usuario Logado', JSON.stringify(usuario));
-      console.log('usario',  JSON.stringify(usuario));
       const cliente = await getCliente(usuario).catch(() => null);
       const admin = await getAdmin(usuario).catch(() => null);
 
       if (cliente) {
-        localStorage.setItem('Cliente', JSON.stringify(cliente));
+        const usuarioLogado = { ...usuario, tipo: 'cliente', detalhes: cliente };
+        login(usuarioLogado);
         navigate(`/clientes/${cliente.idUsuario}`);
       } else if (admin) {
-        localStorage.setItem('Administrador', JSON.stringify(admin));
-        navigate('/admin-dashboard');
+        const usuarioLogado = { ...usuario, tipo: 'admin', detalhes: admin };
+        login(usuarioLogado);
+        navigate(`/admin/${admin.idUsuario}`);
       } else {
         setErro('Usuário sem papel definido.');
       }

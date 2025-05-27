@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
 import api from '../services/api';
@@ -6,21 +6,22 @@ import Header from '../components/Header';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styles from './Home.module.css';
+import { AuthContext } from '../contexts/AuthContext';
 
 export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [produtos, setProdutos]       = useState([]);
-  const user = JSON.parse(localStorage.getItem('user'));
-
-  const cliente = JSON.parse(localStorage.getItem('cliente'));
-  const admin = JSON.parse(localStorage.getItem('administrador'));
+  const { user } = useContext(AuthContext);
+  const tipoUsuario = user?.tipo;
 
   useEffect(() => {
     api.get('/produtos')
        .then(res => setProdutos(res.data))
        .catch(err => console.error(err));
+       
   }, []);
-
+  
+  console.log('usuario', tipoUsuario, user);
   const promos = [
     '/promos/perfil.jpg',
     '/promos/perfil.jpg',
@@ -53,26 +54,36 @@ export default function Home() {
 
       <aside className={`${styles.sidebar} ${sidebarOpen ? styles.open : ''}`}>
         {!user && (
-         <>
-          <Link to="/Login">Login</Link>
-          <Link to="/Cadastro">Cadastre-se</Link>
-       </>
-        )}
-        {!!cliente && (
           <>
+            <Link to="/login">Login</Link>
+            <Link to="/cadastro">Cadastre-se</Link>
+          </>
+        )}
+        {tipoUsuario === 'cliente' && (
+          <>
+            {user?.nome && <p className={styles.sidebarUser}>Olá, {user.nome}</p>}
             <Link to="/meu-perfil">Minha Conta</Link>
             <Link to="/meus-pedidos">Meus Pedidos</Link>
+            <Link to="/meus-produtos">Meus Produtos</Link>
+            <Link to="/carrinho">Carrinho</Link>
             <Link to="/favoritos">Favoritos</Link>
             <Link to="/notificacoes">Notificações</Link>
           </>
         )}
-        {!!admin &&(
+        {tipoUsuario === 'admin' && (
           <>
+            {user?.nome && <p className={styles.sidebarUser}>Administrador: {user.nome}</p>}
             <Link to="/produtos">Lista de Produtos</Link>
             <Link to="/produtos/novo">Adicionar Produto</Link>
             <Link to="/categorias">Lista de Categorias</Link>
             <Link to="/categorias/novo">Adicionar Categoria</Link>
           </>
+        )}
+        {user && (
+          <button onClick={() => {
+            localStorage.clear();
+            window.location.reload();
+          }}>Sair</button>
         )}
       </aside>
 

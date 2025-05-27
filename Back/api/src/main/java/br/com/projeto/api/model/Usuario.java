@@ -7,7 +7,6 @@ public class Usuario {
   private String senha;
   private String cpf;
   private int enderecoId;
-  private Boolean ativo; 
 
   // Getters e Setters
   public int getIdUsuario() {
