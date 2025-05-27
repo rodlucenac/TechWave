@@ -78,3 +78,17 @@
   color: #666;
   margin-top: 2rem;
 }
+
+
+.cartButtonWrapper {
+  text-align: right;
+  margin: 0 16px 8px 0;
+}
+.cartButton {
+  background: #007bff;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 500;
+}

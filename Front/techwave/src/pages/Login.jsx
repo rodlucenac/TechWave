@@ -35,13 +35,14 @@ export default function Login() {
 
       const cliente = await getCliente(usuario).catch(() => null);
       const admin   = await getAdmin(usuario).catch(() => null);
+      console.log(usuario, cliente, admin);
 
       if (cliente) {
-        const usuarioLogado = { ...usuario, tipo: 'cliente', detalhes: cliente };
+        const usuarioLogado = { tipo: 'cliente', detalhes: { ...cliente, nome: usuario.nome } };
         login(usuarioLogado);
         navigate(`/clientes/${cliente.idUsuario}`);
       } else if (admin) {
-        const usuarioLogado = { ...usuario, tipo: 'admin', detalhes: admin };
+        const usuarioLogado = { tipo: 'admin', detalhes: { ...admin, nome: usuario.nome } };
         login(usuarioLogado);
         navigate(`/admin/${admin.idUsuario}`);
       } else {

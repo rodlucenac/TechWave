@@ -8,29 +8,35 @@ import ProductForm from './pages/ProductForm';
 import CategoryForm from './pages/CategoryForm';
 import CategoriesList from './pages/CategoriesList';
 import AdminDashboard from './pages/AdminDashboard';
-
+import { CartProvider } from './contexts/CartContext';
+import Cart from './pages/Cart';
 
 function App() {
   return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/cadastro" element={<Cadastro />} />
-      <Route path="/" element={<Home />} />
-      <Route path="/clientes/:idUsuario" element={<Home />} />
-      <Route path="/admin/:idUsuario" element={<Home />} />
+    <CartProvider>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/cadastro" element={<Cadastro />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/clientes/:idUsuario" element={<Home />} />
+        <Route path="/admin/:idUsuario" element={<Home />} />
 
-      <Route path="/produtos" element={<ProductsList />} />
-      <Route path="/produtos/novo" element={<ProductForm />} />
-      <Route path="/produtos/:id/editar" element={<ProductForm />} />
-      
+        <Route path="/produtos" element={<ProductsList />} />
+        <Route path="/produtos/novo" element={<ProductForm />} />
+        <Route path="/produtos/:id/editar" element={<ProductForm />} />
 
-      <Route path="/categorias" element={<CategoriesList />} />
-      <Route path="/categorias/novo" element={<CategoryForm />} />
-      <Route path="/categorias/:id/editar" element={<CategoryForm />} /> 
-      <Route path="/admin-dashboard" element={<AdminDashboard />} />     
-      
-      <Route path="*" element={<Navigate to="/login" replace />} />
-    </Routes>
+        <Route path="/categorias" element={<CategoriesList />} />
+        <Route path="/categorias/novo" element={<CategoryForm />} />
+        <Route path="/categorias/:id/editar" element={<CategoryForm />} />
+
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+
+        {/* Carrinho */}
+        <Route path="/cart" element={<Cart />} />
+
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
+    </CartProvider>
   );
 }
 

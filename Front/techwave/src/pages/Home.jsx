@@ -8,12 +8,15 @@ import Header from '../components/Header';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styles from './Home.module.css';
+import { useCart } from '../contexts/CartContext';
+import { addItem } from '../services/cartService';
 
 export default function Home() {
   const { user, logout } = useAuth();
   const navigate         = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [produtos, setProdutos]       = useState([]);
+  const {  ensureCart } = useCart();
 
   useEffect(() => {
     api.get('/produtos')
@@ -24,6 +27,18 @@ export default function Home() {
   const handleLogout = () => {
     logout();
     navigate('/login', { replace: true });
+  };
+
+  // adiciona item ao carrinho usando await/async para garantir id válido
+  const handleAddToCart = async (idProduto) => {
+    try {
+      const id = await ensureCart();        // cria ou pega carrinho
+      await addItem(id, idProduto, 1);      // adiciona item
+      alert('Produto adicionado ao carrinho!');
+    } catch (err) {
+      console.error(err);
+      alert('Erro ao adicionar: ' + err.message);
+    }
   };
 
   const promos = [
@@ -65,6 +80,7 @@ export default function Home() {
 
         {user?.tipo === 'cliente' && (
           <>
+            <p className={styles.userGreeting}>Olá, {user.detalhes.nome}!</p>
             <Link to={`/clientes/${user.detalhes.idUsuario}`}>Minha Conta</Link>
             <Link to="/meus-pedidos">Pedidos</Link>
             <Link to="/favoritos">Produtos Favoritos</Link>
@@ -78,6 +94,7 @@ export default function Home() {
 
         {user?.tipo === 'admin' && (
           <>
+            <p className={styles.userGreeting}>Olá, {user.detalhes.nome}!</p>
             <Link to={`/admin/${user.detalhes.idUsuario}`}>Minha Conta</Link>
             <Link to="/produtos">Gerenciar Produtos</Link>
             <Link to="/categorias">Gerenciar Categorias</Link>
@@ -90,6 +107,11 @@ export default function Home() {
       </aside>
 
       <main className={`${styles.mainContent} ${sidebarOpen ? styles.shifted : ''}`}>
+        <div className={styles.cartButtonWrapper}>
+          <Link to="/cart" className={styles.cartButton}>
+            Ver Carrinho
+          </Link>
+        </div>
         <div className={styles.sliderWrapper}>
           <Slider {...sliderSettings}>
             {promos.map((url, idx) => (
@@ -106,9 +128,15 @@ export default function Home() {
 
         <section className={styles.productsGrid}>
           {produtos.map(p => (
-            <div key={p.id_produto} className={styles.productCard}>
+            <div key={p.idProduto} className={styles.productCard}>
               <h3>{p.nome}</h3>
               <p>R$ {Number(p.preco).toFixed(2)}</p>
+              <button
+                className={styles.btnAddCart}
+                onClick={() => handleAddToCart(p.idProduto)}
+              >
+                Adicionar ao Carrinho
+              </button>
             </div>
           ))}
         </section>
