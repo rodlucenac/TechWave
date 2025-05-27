@@ -1,5 +1,7 @@
 package br.com.projeto.api.service;
 
+import br.com.projeto.api.model.Cliente;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,12 @@ public class UsuarioService {
 
   @Autowired
   private EnderecoService enderecoService;
+
+  @Autowired
+  private ClienteService clienteService;
+
+  @Autowired
+  private AdministradorService administradorService;
 
   //private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -60,6 +68,21 @@ public void criarUsuarioComEndereco(RegistroRequest request) {
     usuario.setAtivo(true);
 
     usuarioRepository.inserirUsuario(usuario);
+
+    Usuario usuarioSalvo = usuarioRepository.findByEmail(usuario.getEmail());
+    Cliente cliente = new Cliente();
+    cliente.setIdUsuario(usuarioSalvo.getIdUsuario());
+    clienteService.inserirCliente(cliente);
+}
+
+public String identificarTipoUsuario(int idUsuario) {
+    if (clienteService.isCliente(idUsuario)) {
+        return "cliente";
+    } else if (administradorService.isAdministrador(idUsuario)) {
+        return "admin";
+    } else {
+        return "desconhecido";
+    }
 }
   
 }

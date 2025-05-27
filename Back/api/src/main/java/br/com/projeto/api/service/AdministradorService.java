@@ -19,4 +19,8 @@ public class AdministradorService {
   public Administrador buscarPorId(int idUsuario) {
     return administradorRepository.findById(idUsuario);
   }
+  
+  public boolean isAdministrador(int idUsuario) {
+        return administradorRepository.existsById(idUsuario);
+    }
 }

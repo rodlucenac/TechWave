@@ -22,4 +22,14 @@ public class ClienteRepository {
     String sql = "SELECT * FROM Cliente WHERE id_usuario = ?";
     return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Cliente.class), idUsuario);
   }
+
+
+  public void save(Cliente cliente) {
+    String sql = "INSERT INTO Cliente (id_usuario, telefone, data_nascimento) VALUES (?, ?, ?)";
+    jdbcTemplate.update(sql,
+        cliente.getIdUsuario(),
+        cliente.getTelefone(),
+        cliente.getDataNascimento()
+    );
+  }
 }

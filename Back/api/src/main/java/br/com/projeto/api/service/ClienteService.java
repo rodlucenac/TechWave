@@ -23,4 +23,8 @@ public class ClienteService {
       return null;
     }
   }
+
+  public void inserirCliente(Cliente cliente) {
+    clienteRepository.save(cliente);
+  }
 }

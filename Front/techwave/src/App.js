@@ -7,6 +7,7 @@ import ProductsList from './pages/ProductsList';
 import ProductForm from './pages/ProductForm';
 import CategoryForm from './pages/CategoryForm';
 import CategoriesList from './pages/CategoriesList';
+import AdminDashboard from './pages/AdminDashboard';
 
 
 function App() {
@@ -22,7 +23,8 @@ function App() {
 
       <Route path="/categorias" element={<CategoriesList />} />
       <Route path="/categorias/novo" element={<CategoryForm />} />
-      <Route path="/categorias/:id/editar" element={<CategoryForm />} />      
+      <Route path="/categorias/:id/editar" element={<CategoryForm />} /> 
+      <Route path="/admin-dashboard" element={<AdminDashboard />} />     
       
       <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>

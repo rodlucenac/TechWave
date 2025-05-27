@@ -32,17 +32,19 @@ export default function Login() {
       }
       localStorage.setItem('usuario Logado', JSON.stringify(usuario));
       console.log('usario',  JSON.stringify(usuario));
-      const cliente = await getCliente(usuario);
-      const admin = await getAdmin(usuario);
-      if (!!cliente){
-        localStorage.setItem(`Cliente`, JSON.stringify(cliente));
-      }
-      else if (!!admin){
-      localStorage.setItem(`Administrador`, JSON.stringify(admin));
-    
+      const cliente = await getCliente(usuario).catch(() => null);
+      const admin = await getAdmin(usuario).catch(() => null);
+
+      if (cliente) {
+        localStorage.setItem('Cliente', JSON.stringify(cliente));
+        navigate(`/clientes/${cliente.idUsuario}`);
+      } else if (admin) {
+        localStorage.setItem('Administrador', JSON.stringify(admin));
+        navigate('/admin-dashboard');
+      } else {
+        setErro('Usuário sem papel definido.');
       }
       
-      navigate('/');
     } catch(error) {
       console.log("ERROR", error);
       setErro('Erro ao conectar com o servidor');
