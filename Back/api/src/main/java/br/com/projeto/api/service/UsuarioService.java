@@ -1,17 +1,16 @@
 package br.com.projeto.api.service;
 
-import br.com.projeto.api.model.Cliente;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service; // Para encriptar a senha
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional; // Para encriptar a senha
 
+import br.com.projeto.api.dto.RegistroRequest;
+import br.com.projeto.api.model.Cliente;
+import br.com.projeto.api.model.Endereco;
 import br.com.projeto.api.model.Usuario;
 import br.com.projeto.api.repository.UsuarioRepository;
-import br.com.projeto.api.dto.RegistroRequest;
-import br.com.projeto.api.model.Endereco;
 
 @Service
 public class UsuarioService {
@@ -28,7 +27,6 @@ public class UsuarioService {
   @Autowired
   private AdministradorService administradorService;
 
-  //private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
   public Usuario findByEmail(String email) {
     return usuarioRepository.findByEmail(email);
@@ -49,9 +47,6 @@ public class UsuarioService {
 
     int enderecoId = enderecoService.salvarEndereco(endereco);
     usuario.setEnderecoId(enderecoId);
-    usuario.setAtivo(true);
-    System.out.println("DEBUG - usuario.ativo = " + usuario.getAtivo());
-    //usuario.setSenha(encoder.encode(usuario.getSenha()));
     usuarioRepository.inserirUsuario(usuario);
   }
 
@@ -65,7 +60,6 @@ public void criarUsuarioComEndereco(RegistroRequest request) {
 
     int enderecoId = enderecoService.salvarEndereco(endereco);
     usuario.setEnderecoId(enderecoId);
-    usuario.setAtivo(true);
 
     usuarioRepository.inserirUsuario(usuario);
 

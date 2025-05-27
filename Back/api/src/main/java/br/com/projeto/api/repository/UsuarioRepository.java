@@ -27,14 +27,13 @@ public class UsuarioRepository {
   }
 
   public void inserirUsuario(Usuario usuario) {
-    String sql = "INSERT INTO Usuario (nome, email, senha, cpf, endereco_id, ativo) VALUES (?, ?, ?, ?, ?, ?)";
+    String sql = "INSERT INTO Usuario (nome, email, senha, cpf, endereco_id) VALUES (?, ?, ?, ?, ?)";
     jdbcTemplate.update(sql,
       usuario.getNome(),
       usuario.getEmail(),
       usuario.getSenha(),
       usuario.getCpf(),
-      usuario.getEnderecoId(),
-      Boolean.TRUE.equals(usuario.getAtivo()) ? 1 : 0
+      usuario.getEnderecoId()
     );
   }
 

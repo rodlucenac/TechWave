@@ -46,13 +46,6 @@ public class Usuario {
   public void setEnderecoId(int enderecoId) {
     this.enderecoId = enderecoId;
   }
-  
-  public Boolean getAtivo() {
-    return ativo;
-}
 
-public void setAtivo(Boolean ativo) {
-    this.ativo = ativo;
-}
 }
 
