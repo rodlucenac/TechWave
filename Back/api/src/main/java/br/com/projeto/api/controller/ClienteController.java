@@ -6,16 +6,23 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 
 import br.com.projeto.api.model.Cliente;
 import br.com.projeto.api.service.ClienteService;
 
+import br.com.projeto.api.dao.EnderecoDao;
+import br.com.projeto.api.model.Endereco;
+
 @RestController
-@RequestMapping("/clientes")
+@RequestMapping("/api/clientes")
 public class ClienteController {
 
   @Autowired
   private ClienteService clienteService;
+
+  @Autowired
+  private EnderecoDao enderecoDao;
 
   @GetMapping("/{id}")
   public ResponseEntity<Cliente> buscarClientePorId(@PathVariable int id) {
@@ -29,5 +36,14 @@ public class ClienteController {
   @GetMapping("/is-cliente/{id}")
   public boolean verificarSeEhCliente(@PathVariable int id) {
     return clienteService.isCliente(id);
+  }
+
+  /**
+   * Retorna o endereço principal de um cliente.
+   * GET /api/clientes/{id}/endereco
+   */
+  @GetMapping(path = "/{id}/endereco", produces = MediaType.APPLICATION_JSON_VALUE)
+  public Endereco getEndereco(@PathVariable("id") int idCliente) {
+    return enderecoDao.buscarPorCliente(idCliente);
   }
 }

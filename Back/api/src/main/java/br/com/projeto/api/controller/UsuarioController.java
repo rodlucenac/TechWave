@@ -18,7 +18,7 @@ import br.com.projeto.api.service.ClienteService;
 import br.com.projeto.api.service.AdministradorService;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/api/usuarios")
 public class UsuarioController {
 
   @Autowired

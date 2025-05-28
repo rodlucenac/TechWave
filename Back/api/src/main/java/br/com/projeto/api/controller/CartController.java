@@ -47,9 +47,10 @@ public class CartController {
     }
 
     @PostMapping("/{id}/checkout")
-    public Carrinho checkout(@PathVariable int id) {
-        return svc.checkout(id);
-    }
+public Carrinho checkout(@PathVariable int id,
+                         @RequestParam Integer enderecoId) {
+    return svc.checkout(id, enderecoId);
+}
 
     @DeleteMapping("/{id}/items/{prodId}")
     public Carrinho removeItem(@PathVariable int id,

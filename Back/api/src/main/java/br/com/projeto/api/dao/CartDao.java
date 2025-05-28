@@ -1,4 +1,3 @@
-// src/main/java/br/com/projeto/api/dao/CartDao.java
 package br.com.projeto.api.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -8,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.List;
+import java.math.BigDecimal;
 
 
 import br.com.projeto.api.model.Carrinho;
@@ -50,10 +50,56 @@ public class CartDao {
         );
     }
 
-    /** Fecha o carrinho (checkout) */
-    public void checkout(int cartId) {
-        jdbc.update("UPDATE Carrinho_compra SET status_carrinho = 'fechado' WHERE id_carrinho = ?", cartId);
+    /**
+     * Fecha o carrinho e atualiza Pedido e Pagamento.
+     * - Carrinho_compra.status_carrinho → 'fechado'
+     * - Pedido.status_pedido           → 'aguardando_pagamento'
+     * - Pedido.valor_total             → soma dos itens
+     * - Se não existir, insere um Pagamento pendente.
+     */
+    // src/main/java/br/com/projeto/api/dao/CartDao.java
+// *** Substitua APENAS o método checkout ***
+
+public void checkout(int cartId, Integer enderecoId) {
+
+    // fecha carrinho
+    jdbc.update(
+        "UPDATE Carrinho_compra SET status_carrinho = 'fechado' WHERE id_carrinho = ?",
+        cartId
+    );
+
+    int pedidoId = obterOuCriarPedido(cartId);
+
+    // calcula total
+    BigDecimal total = jdbc.queryForObject(
+        "SELECT SUM(a.quantidade * p.preco) " +
+        "FROM Adiciona a JOIN Produto p ON p.id_produto = a.produto_id " +
+        "WHERE a.pedido_id = ?",
+        BigDecimal.class, pedidoId
+    );
+
+    // grava total + endereço escolhido
+    jdbc.update(
+        "UPDATE Pedido SET status_pedido = 'aguardando_pagamento', " +
+        "valor_total = ?, endereco_id = ? " +
+        "WHERE id_pedido = ?",
+        total, enderecoId, pedidoId
+    );
+
+    // cria pagamento pendente se necessário
+    Integer pagId = jdbc.query(
+        "SELECT id_pagamento FROM Pagamento WHERE pedido_id = ?",
+        rs -> rs.next() ? rs.getInt(1) : null,
+        pedidoId
+    );
+    if (pagId == null) {
+        jdbc.update(
+            "INSERT INTO Pagamento(tipo_pagamento, status_pagamento, valor_pagamento, data_pagamento, pedido_id) " +
+            "VALUES('pix', 'pendente', ?, NOW(), ?)",
+            total, pedidoId
+        );
     }
+}
 
     /*----------------  Pedido / Itens  ----------------*/
 
@@ -115,34 +161,42 @@ public class CartDao {
     }
 
     /**
- * Lista todos os itens do carrinho consultando a tabela Adiciona.
- */
-public List<CarrinhoItem> listarItens(int cartId) {
-    // Localiza o pedido 1-para-1 ligado ao carrinho
-    Integer pedidoId = jdbc.query(
-        "SELECT id_pedido FROM Pedido WHERE carrinho_id = ?",
-        rs -> rs.next() ? rs.getInt(1) : null,
-        cartId
-    );
-    if (pedidoId == null) {
-        return List.of();   // carrinho ainda sem itens
-    }
+     * Lista todos os itens do carrinho já trazendo nome, descrição e imagem do Produto.
+     */
+    public List<CarrinhoItem> listarItens(int cartId) {
 
-    return jdbc.query(
-        "SELECT a.pedido_id, a.produto_id, a.quantidade, p.preco " +
-        "FROM Adiciona a JOIN Produto p ON p.id_produto = a.produto_id " +
-        "WHERE a.pedido_id = ?",
-        (rs, rn) -> {
-            CarrinhoItem item = new CarrinhoItem();
-            item.setCarrinhoId(cartId);
-            item.setProdutoId(rs.getInt("produto_id"));
-            item.setQuantidade(rs.getInt("quantidade"));
-            item.setPrecoUnitario(rs.getBigDecimal("preco"));
-            return item;
-        },
-        pedidoId
-    );
-}
+        // Localiza o pedido 1‑para‑1 ligado ao carrinho
+        Integer pedidoId = jdbc.query(
+            "SELECT id_pedido FROM Pedido WHERE carrinho_id = ?",
+            rs -> rs.next() ? rs.getInt(1) : null,
+            cartId
+        );
+        if (pedidoId == null) return List.of();
+
+        String sql = """
+            SELECT a.produto_id,
+                   a.quantidade,
+                   p.preco,
+                   p.nome,
+                   p.descricao,
+                   p.imagem_nome
+              FROM Adiciona a
+              JOIN Produto p ON p.id_produto = a.produto_id
+             WHERE a.pedido_id = ?
+        """;
+
+        return jdbc.query(sql, (rs, rn) -> {
+            CarrinhoItem it = new CarrinhoItem();
+            it.setCarrinhoId(cartId);
+            it.setProdutoId(rs.getInt("produto_id"));
+            it.setQuantidade(rs.getInt("quantidade"));
+            it.setPrecoUnitario(rs.getBigDecimal("preco"));
+            it.setNome(rs.getString("nome"));
+            it.setDescricao(rs.getString("descricao"));
+            it.setImagemNome(rs.getString("imagem_nome"));
+            return it;
+        }, pedidoId);
+    }
 
 
 }

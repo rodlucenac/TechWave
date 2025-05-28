@@ -18,6 +18,15 @@ public class PedidoService {
     return pedidoRepository.findAll();
   }
 
+  /**
+   * Lista todos os pedidos de um cliente específico.
+   * @param idCliente ID do cliente (tabela Cliente / Usuario)
+   * @return lista de pedidos que pertencem ao cliente
+   */
+  public List<Pedido> listarPedidosPorCliente(int idCliente) {
+    return pedidoRepository.listarPedidosPorCliente(idCliente);
+  }
+
   // Cria um novo pedido com validações básicas
   @Transactional
   public void criarPedido(Pedido pedido) {

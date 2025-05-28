@@ -8,6 +8,7 @@ public class Pedido {
   private int idPedido;
   private Date dataPedido;
   private String statusPedido;
+  private String statusPagamento;
   private BigDecimal valorTotal;
   private int carrinhoId;
 
@@ -41,5 +42,11 @@ public class Pedido {
   }
   public void setCarrinhoId(int carrinhoId) {
     this.carrinhoId = carrinhoId;
+  }
+  public String getStatusPagamento() {
+    return statusPagamento;
+  }
+  public void setStatusPagamento(String statusPagamento) {
+    this.statusPagamento = statusPagamento;
   }
 }

@@ -52,10 +52,10 @@ public class CartService {
     /**
      * Finaliza o carrinho (status = 'fechado') e retorna o carrinho.
      */
-    public Carrinho checkout(int cartId) {
-        dao.checkout(cartId);
-        return dao.buscarCarrinho(cartId);
-    }
+    public Carrinho checkout(int cartId, Integer enderecoId) {
+    dao.checkout(cartId, enderecoId);
+    return dao.buscarCarrinho(cartId);
+}
 
     /**
      * Busca apenas os dados do carrinho (id, status, total, criadoEm).

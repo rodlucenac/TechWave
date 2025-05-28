@@ -3,25 +3,28 @@ import React, { useEffect, useState } from 'react';
 import {
   getCarrinho,
   updateItem,
-  removeItem,
-  checkout
+  removeItem
 } from '../services/cartService';
 import Header from '../components/Header';
 import styles from './Cart.module.css';
 import { useCart } from '../contexts/CartContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Cart() {
   const [cart, setCart] = useState(null);
   const { ensureCart } = useCart();
+  const navigate = useNavigate();
 
   const refresh = () =>
-    ensureCart().then(id => getCarrinho(id).then(setCart));
+    ensureCart().then(async id => {
+      const data = await getCarrinho(id);
+      setCart(data);
+    });
 
   useEffect(() => {
     refresh();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, []); // keep once
 
   if (!cart) return <p className={styles.loading}>Carregando carrinho…</p>;
 
@@ -36,9 +39,8 @@ export default function Cart() {
     removeItem(id, pid).then(refresh);
   };
 
-  const pay = async () => {
-    const id = await ensureCart();
-    checkout(id).then(refresh);
+  const pay = () => {
+    navigate('/checkout');   // apenas vai para a tela de confirmação
   };
 
   return (
@@ -55,7 +57,14 @@ export default function Cart() {
         <ul className={styles.list}>
           {cart.itens.map(i => (
             <li key={i.produtoId} className={styles.item}>
-              <span>Prod&nbsp;{i.produtoId}</span>
+              <span>
+                {i.nome || `Produto ${i.produtoId}`}
+              </span>
+              {i.descricao && (
+                <small className={styles.desc}>
+                  {i.descricao}
+                </small>
+              )}
               <span>R$ {i.precoUnitario.toFixed(2)}</span>
               <div className={styles.qty}>
                 <button onClick={() => change(i.produtoId, -1)}>-</button>

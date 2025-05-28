@@ -12,11 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import br.com.projeto.api.model.Pedido;
 import br.com.projeto.api.service.PedidoService;
 
 @RestController
-@RequestMapping("/pedidos")
+@RequestMapping("/api/pedidos")
 public class PedidoController {
 
   @Autowired
@@ -47,5 +48,13 @@ public class PedidoController {
   public String removerPedido(@PathVariable int id) {
     pedidoService.removerPedido(id);
     return "Pedido removido com sucesso!";
+  }
+  /**
+   * Endpoint para listar pedidos de um cliente específico.
+   * Ex.: GET /api/pedidos/clientes/20
+   */
+  @GetMapping("/clientes/{idCliente}")
+  public List<Pedido> listarPedidosPorCliente(@PathVariable int idCliente) {
+    return pedidoService.listarPedidosPorCliente(idCliente);
   }
 }

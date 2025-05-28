@@ -21,6 +21,26 @@ public class PedidoRepository {
     return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Pedido.class));
   }
 
+  /**
+   * Retorna todos os pedidos associados a um cliente específico.
+   * Observação: este SELECT assume que existe relação entre
+   * Cliente (id_usuario) → Carrinho_compra → Pedido.
+   * Ajuste a cláusula JOIN conforme o seu modelo real.
+   */
+  public List<Pedido> listarPedidosPorCliente(int idCliente) {
+    String sql = """
+        SELECT p.*
+          FROM Pedido p
+          JOIN Carrinho_compra c ON c.id_carrinho = p.carrinho_id
+          JOIN Cliente cli       ON cli.id_usuario = ?
+        """;
+    return jdbcTemplate.query(
+        sql,
+        new BeanPropertyRowMapper<>(Pedido.class),
+        idCliente
+    );
+  }
+
   // Insere um novo pedido (se houver uma procedure para criação, chame-a aqui; senão, insere diretamente)
   public void inserirPedido(Pedido pedido) {
     // Exemplo: inserindo diretamente. Caso você tenha uma procedure, substitua por "CALL sp_inserir_pedido(?, ?, ?, ?)".

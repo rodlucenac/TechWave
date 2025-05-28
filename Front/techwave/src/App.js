@@ -10,6 +10,8 @@ import CategoriesList from './pages/CategoriesList';
 import AdminDashboard from './pages/AdminDashboard';
 import { CartProvider } from './contexts/CartContext';
 import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
+
 
 function App() {
   return (
@@ -24,6 +26,7 @@ function App() {
         <Route path="/produtos" element={<ProductsList />} />
         <Route path="/produtos/novo" element={<ProductForm />} />
         <Route path="/produtos/:id/editar" element={<ProductForm />} />
+        
 
         <Route path="/categorias" element={<CategoriesList />} />
         <Route path="/categorias/novo" element={<CategoryForm />} />
@@ -33,6 +36,8 @@ function App() {
 
         {/* Carrinho */}
         <Route path="/cart" element={<Cart />} />
+        {/* Checkout */}
+        <Route path="/checkout" element={<Checkout />} />
 
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>

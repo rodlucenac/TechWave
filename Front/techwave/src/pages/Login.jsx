@@ -13,18 +13,18 @@ export default function Login() {
   const { login }           = useContext(AuthContext);
 
   const getCliente = async user => {
-    const res = await api.get(`/clientes/${user.idUsuario}`);
+    const res = await api.get(`/api/clientes/${user.idUsuario}`);
     return res.data;
   };
   const getAdmin = async user => {
-    const res = await api.get(`/admin/${user.idUsuario}`);
+    const res = await api.get(`/api/admin/${user.idUsuario}`);
     return res.data;
   };
 
   const handleSubmit = async e => {
     e.preventDefault();
     try {
-      const res = await api.get('/usuarios');
+      const res = await api.get('/api/usuarios');
       const usuario = res.data.find(
         u => u.email === email && u.senha === senha
       );
