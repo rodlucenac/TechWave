@@ -7,11 +7,12 @@ import ProductsList from './pages/ProductsList';
 import ProductForm from './pages/ProductForm';
 import CategoryForm from './pages/CategoryForm';
 import CategoriesList from './pages/CategoriesList';
-import AdminDashboard from './pages/AdminDashboard';
 import { CartProvider } from './contexts/CartContext';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Pagamento from './pages/Pagamento';
+import EnderecoForm from './pages/EnderecoForm';
+import EnderecoList from './pages/EnderecoList';
 
 function App() {
   return (
