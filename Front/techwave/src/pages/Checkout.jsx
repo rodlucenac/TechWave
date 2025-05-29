@@ -21,7 +21,7 @@ export default function Checkout() {
   useEffect(() => {
     const fetchAll = async () => {
       const cartId = await ensureCart();
-      const idCli  = user.detalhes.idUsuario;
+      const idCli  = user.detalhes.id;
       const [c, e] = await Promise.all([
         api.get(`/api/cart/${cartId}`).then(r => r.data),
         api.get(`/api/clientes/${idCli}/endereco`).then(r => [r.data])
