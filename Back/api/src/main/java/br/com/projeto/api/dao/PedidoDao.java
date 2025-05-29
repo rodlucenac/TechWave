@@ -57,13 +57,13 @@ public class PedidoDao {
     }
 
     public void inserirPedido(Pedido pedido) {
-        String sql = "INSERT INTO Pedido (data_pedido, status_pedido, valor_total, carrinho_id, status_pagamento) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Pedido (data_pedido, status_pedido, valor_total, carrinho_id) VALUES (?, ?, ?, ?)";
         jdbc.update(sql,
             pedido.getDataPedido(),
             pedido.getStatusPedido(),
             pedido.getValorTotal(),
-            pedido.getCarrinhoId(),
-            pedido.getStatusPagamento()
+            pedido.getCarrinhoId()
+            
         );
     }
     

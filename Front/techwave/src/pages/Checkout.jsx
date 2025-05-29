@@ -19,16 +19,21 @@ export default function Checkout() {
 
   // carrega carrinho + endereços do cliente
   useEffect(() => {
+    console.log('Carregando carrinho e endereços...');
     const fetchAll = async () => {
       const cartId = await ensureCart();
       const idCli  = user.detalhes.id;
+
       const [c, e] = await Promise.all([
         api.get(`/api/cart/${cartId}`).then(r => r.data),
-        api.get(`/api/clientes/${idCli}/endereco`).then(r => [r.data])
+        api.get(`/api/enderecos/usuario/${idCli}`).then(r => r.data)
       ]);
+
       setCart(c);
       setEnd(e);
       if (e.length) setSelEnd(e[0].idEndereco ?? e[0].id_endereco);
+      console.log('Carrinho e endereços carregados:', c, e);
+      
       setLoading(false);
     };
     fetchAll().catch(console.error);
@@ -43,6 +48,9 @@ export default function Checkout() {
     // redireciona para a tela de pagamento
     navigate('/pagamento');
   };
+  useEffect(() => {
+    console.log('loading:', loading);
+  }, [loading]);
 
   if (loading) return <p className={styles.loading}>Carregando…</p>;
 
