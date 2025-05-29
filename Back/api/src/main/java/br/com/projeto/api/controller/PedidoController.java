@@ -57,4 +57,6 @@ public class PedidoController {
   public List<Pedido> listarPedidosPorCliente(@PathVariable int idCliente) {
     return pedidoService.listarPedidosPorCliente(idCliente);
   }
+
+  
 }

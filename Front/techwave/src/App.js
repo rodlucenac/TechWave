@@ -13,6 +13,7 @@ import Checkout from './pages/Checkout';
 import Pagamento from './pages/Pagamento';
 import EnderecoForm from './pages/EnderecoForm';
 import EnderecoList from './pages/EnderecoList';
+import MeusPedidos from './pages/MeusPedidos';
 
 function App() {
   return (
@@ -42,6 +43,8 @@ function App() {
         {/* Checkout */}
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/pagamento" element={<Pagamento />} />
+
+        <Route path="/meus-pedidos" element={<MeusPedidos />} />
 
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>

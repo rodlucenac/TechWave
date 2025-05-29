@@ -3,11 +3,14 @@ package br.com.projeto.api.dao;
 import br.com.projeto.api.model.Pedido;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
+
 
 @Repository
 public class PedidoDao {
     private final JdbcTemplate jdbc;
+    
     public PedidoDao(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
     }
@@ -54,17 +57,38 @@ public class PedidoDao {
     }
 
     public void inserirPedido(Pedido pedido) {
-        String sql = "INSERT INTO Pedido (data_pedido, status_pedido, valor_total, carrinho_id) VALUES (?, ?, ?, ?)";
-jdbc.update(sql,
-    pedido.getDataPedido(),
-    pedido.getStatusPedido(),
-    pedido.getValorTotal(),
-    pedido.getCarrinhoId()
-);
+        String sql = "INSERT INTO Pedido (data_pedido, status_pedido, valor_total, carrinho_id, status_pagamento) VALUES (?, ?, ?, ?, ?)";
+        jdbc.update(sql,
+            pedido.getDataPedido(),
+            pedido.getStatusPedido(),
+            pedido.getValorTotal(),
+            pedido.getCarrinhoId(),
+            pedido.getStatusPagamento()
+        );
     }
+    
     public int obterUltimoId() {
-  return jdbc.queryForObject("SELECT MAX(id_pedido) FROM Pedido", Integer.class);
-}
+        return jdbc.queryForObject("SELECT MAX(id_pedido) FROM Pedido", Integer.class);
+    }
 
-
+    public List<Pedido> listarPedidosPorCliente(int idCliente) {
+        String sql = """
+            SELECT p.*
+            FROM pedido p
+            INNER JOIN carrinho_compra c ON p.carrinho_id = c.id_carrinho
+            WHERE c.cliente_id = ?
+            ORDER BY p.data_pedido DESC
+        """;
+    
+        return jdbc.query(sql, (rs, rowNum) -> {
+            Pedido pedido = new Pedido();
+            pedido.setIdPedido(rs.getInt("id_pedido"));
+            pedido.setDataPedido(rs.getTimestamp("data_pedido"));
+            pedido.setStatusPedido(rs.getString("status_pedido"));
+            pedido.setStatusPagamento(rs.getString("status_pagamento"));
+            pedido.setValorTotal(rs.getBigDecimal("valor_total"));
+            pedido.setCarrinhoId(rs.getInt("carrinho_id"));
+            return pedido;
+        }, idCliente);
+    }
 }

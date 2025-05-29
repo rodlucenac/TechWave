@@ -81,7 +81,6 @@ export default function Home() {
         {user?.tipo === 'cliente' && (
           <>
             <p className={styles.userGreeting}>Olá, {user.detalhes.nome}!</p>
-            <Link to={`/clientes/${user.detalhes.idUsuario}`}>Minha Conta</Link>
             <Link to="/meus-pedidos">Pedidos</Link>
             <Link to="/favoritos">Produtos Favoritos</Link>
             <Link to="/meus-dados">Meus Dados</Link>

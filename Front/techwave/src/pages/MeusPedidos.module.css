@@ -1,0 +1,175 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.title {
+  font-size: 28px;
+  margin-bottom: 24px;
+  color: #333;
+}
+
+.searchContainer {
+  margin-bottom: 24px;
+}
+
+.search {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.pedidoBox {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+  padding: 20px;
+}
+
+.pedidoHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pedidoId {
+  font-size: 18px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.detalhesBtn, .gerenciarBtn {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.gerenciarBtn {
+  background-color: #28a745;
+}
+
+.detalhesBtn:hover {
+  background-color: #0069d9;
+}
+
+.gerenciarBtn:hover {
+  background-color: #218838;
+}
+
+.status {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.sucesso {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.erro {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+.pendente {
+  color: #ffc107;
+  font-weight: bold;
+}
+
+.itemsContainer {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #eee;
+}
+
+.itemBox {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+  padding: 16px;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+}
+
+.itemImg {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  background-color: white;
+  border-radius: 4px;
+}
+
+.itemInfo {
+  flex: 1;
+}
+
+.itemNome {
+  font-weight: 500;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.loading, .error, .empty {
+  text-align: center;
+  padding: 20px;
+  font-size: 18px;
+}
+
+.error {
+  color: #dc3545;
+}
+
+.pedidoInfo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.pagamento, .total {
+  margin: 0;
+}
+
+.total {
+  margin-left: auto;
+}
+
+@media (max-width: 768px) {
+  .pedidoHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .actions {
+    width: 100%;
+  }
+  
+  .detalhesBtn, .gerenciarBtn {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .itemBox {
+    flex-direction: column;
+  }
+  
+  .itemImg {
+    width: 100%;
+    height: 150px;
+  }
+}
