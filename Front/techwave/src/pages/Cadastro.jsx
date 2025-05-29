@@ -59,7 +59,7 @@ export default function Cadastro() {
         }
       };
 
-      await api.post('/usuarios/registro', payload);
+      await api.post('/api/usuarios/registro', payload);
       navigate('/login');
     } catch {
       setErro('Falha ao cadastrar. Tente novamente.');
