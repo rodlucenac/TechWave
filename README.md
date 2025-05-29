@@ -1,4 +1,4 @@
-# 🛒 TechWave - E-commerce de Tecnologia  
+# 🛒 TechWave - Um E-commerce de Tecnologia  
 
 ## 📌 Sobre o Projeto  
 O TechWave é um e-commerce especializado em tecnologia, oferecendo produtos como notebooks, hardware, periféricos e acessórios gamer.  
