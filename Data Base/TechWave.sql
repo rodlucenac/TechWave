@@ -20,8 +20,6 @@ FLUSH PRIVILEGES;
 CREATE DATABASE IF NOT EXISTS TechWave;
 USE TechWave;
 
-ALTER TABLE Usuario DROP COLUMN endereco_id;
-
 -- Adicione o id do usuário na tabela Endereco
 ALTER TABLE Endereco
   ADD COLUMN id_usuario INT,
@@ -434,3 +432,39 @@ BEGIN
 END//
 
 DELIMITER ;
+
+-- CONSULTAS
+
+SELECT p.id_produto, p.nome, SUM(a.quantidade) AS total_vendidos
+FROM Produto p
+JOIN Adiciona a ON p.id_produto = a.produto_id
+GROUP BY p.id_produto, p.nome
+ORDER BY total_vendidos DESC
+LIMIT 5;
+
+
+SELECT u.id_usuario, u.nome, u.email, c.telefone
+FROM Usuario u
+JOIN Cliente c ON u.id_usuario = c.id_usuario;
+
+
+SELECT id_produto, nome, preco
+FROM Produto;
+
+
+SELECT 
+  p.id_pedido, 
+  p.data_pedido, 
+  p.status_pedido, 
+  p.valor_total,
+  u.nome AS cliente
+FROM Pedido p
+JOIN Carrinho_compra c ON p.carrinho_id = c.id_carrinho
+JOIN Cliente cl ON c.id_carrinho = cl.id_usuario
+JOIN Usuario u ON cl.id_usuario = u.id_usuario
+ORDER BY p.data_pedido DESC, u.nome;
+
+
+SELECT 'cliente' AS tipo, COUNT(*) AS total FROM Cliente
+UNION ALL
+SELECT 'admin' AS tipo, COUNT(*) AS total FROM Administrador;
