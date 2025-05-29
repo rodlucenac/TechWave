@@ -32,8 +32,10 @@ function App() {
         <Route path="/categorias/novo" element={<CategoryForm />} />
         <Route path="/categorias/:id/editar" element={<CategoryForm />} />
 
-        <Route path="/admin-dashboard" element={<AdminDashboard />} />
-
+        <Route path="/enderecos" element={<EnderecoList />} />
+        <Route path="/enderecos/novo" element={<EnderecoForm />} />
+        <Route path="/enderecos/:id/editar" element={<EnderecoForm />} />
+        
         {/* Carrinho */}
         <Route path="/cart" element={<Cart />} />
         {/* Checkout */}
