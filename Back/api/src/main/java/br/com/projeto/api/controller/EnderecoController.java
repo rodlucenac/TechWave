@@ -26,38 +26,39 @@ public class EnderecoController {
     private EnderecoService enderecoService;
 
     @PostMapping
-    public ResponseEntity<Integer> criarEndereco(@RequestBody Endereco endereco) {
-        int id = enderecoService.criarEndereco(endereco);
-        return ResponseEntity.status(201).body(id);
+    public ResponseEntity<Integer> salvarEndereco(@RequestBody Endereco endereco) {
+        int id = enderecoService.salvarEndereco(endereco);
+        return ResponseEntity.status(endereco.getIdEndereco() > 0 ? 200 : 201).body(id);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{idEndereco}")
     public ResponseEntity<Void> atualizarEndereco(
-            @PathVariable int id,
-            @RequestBody Endereco endereco) {
-        endereco.setIdEndereco(id);
+        @PathVariable int idEndereco,
+        @RequestBody Endereco endereco
+    ) {
+        endereco.setIdEndereco(idEndereco);
         enderecoService.atualizarEndereco(endereco);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletarEndereco(@PathVariable int id) {
-        enderecoService.deletarEndereco(id);
-        return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/usuario/{id}")
-    public ResponseEntity<List<Endereco>> listarDoUsuario(@PathVariable("id") int idUsuario) {
+    @GetMapping("/usuario/{idUsuario}")
+    public ResponseEntity<List<Endereco>> listarPorUsuario(@PathVariable int idUsuario) {
         List<Endereco> lista = enderecoService.listarPorUsuario(idUsuario);
         return ResponseEntity.ok(lista);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Endereco> buscarPorId(@PathVariable int id) {
-        Endereco e = enderecoService.obterEndereco(id);
-        if (e == null) {
+    @GetMapping("/{idEndereco}")
+    public ResponseEntity<Endereco> buscarPorId(@PathVariable int idEndereco) {
+        Endereco endereco = enderecoService.obterEndereco(idEndereco);
+        if (endereco == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(e);
+        return ResponseEntity.ok(endereco);
+    }
+
+    @DeleteMapping("/{idEndereco}")
+    public ResponseEntity<Void> deletarEndereco(@PathVariable int idEndereco) {
+        enderecoService.deletarEndereco(idEndereco);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -12,14 +12,12 @@ export default function EnderecoList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Redireciona para login se não autenticado
   useEffect(() => {
     if (!user) {
       navigate('/login');
     }
   }, [user, navigate]);
 
-  // Busca endereços do usuário autenticado
   useEffect(() => {
     async function fetchEnderecos() {
       if (!user) return;
@@ -30,7 +28,6 @@ export default function EnderecoList() {
           setError('ID do usuário indisponível.');
           return;
         }
-        // Inclui /api no path para bater no endpoint correto
         const resp = await api.get(`/api/enderecos/usuario/${userId}`);
         setEnderecos(resp.data);
       } catch (err) {
@@ -46,7 +43,6 @@ export default function EnderecoList() {
   const handleDelete = async id => {
     if (!window.confirm('Confirma exclusão deste endereço?')) return;
     try {
-      // Inclui /api para DELETE
       await api.delete(`/api/enderecos/${id}`);
       setEnderecos(prev => prev.filter(e => e.idEndereco !== id));
     } catch (err) {
@@ -61,10 +57,6 @@ export default function EnderecoList() {
 
   if (error) {
     return <p className={styles.error}>{error}</p>;
-  }
-
-  if (enderecos.length === 0) {
-    return <p className={styles.loading}>Nenhum endereço cadastrado.</p>;
   }
 
   return (

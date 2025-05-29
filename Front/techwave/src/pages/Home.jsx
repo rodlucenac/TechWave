@@ -84,6 +84,7 @@ export default function Home() {
             <Link to="/meus-pedidos">Pedidos</Link>
             <Link to="/favoritos">Produtos Favoritos</Link>
             <Link to="/meus-dados">Meus Dados</Link>
+            <Link to="/enderecos">Endereço</Link>
             <Link to="/notificacoes">Notificações</Link>
             <button className={styles.logoutButton} onClick={handleLogout}>
               Sair

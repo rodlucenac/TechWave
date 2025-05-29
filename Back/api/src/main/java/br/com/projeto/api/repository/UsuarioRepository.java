@@ -16,25 +16,32 @@ public class UsuarioRepository {
   private JdbcTemplate jdbcTemplate;
 
   public Usuario findByEmail(String email) {
-    String sql = "SELECT * FROM Usuario WHERE email = ?";
-    List<Usuario> usuarios = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Usuario.class), email);
+    String sql = "SELECT id_usuario AS idUsuario, nome, email, senha, cpf FROM Usuario WHERE email = ?";
+    List<Usuario> usuarios = jdbcTemplate.query(
+      sql,
+      new BeanPropertyRowMapper<>(Usuario.class),
+      email
+    );
     return usuarios.isEmpty() ? null : usuarios.get(0);
   }
 
   public List<Usuario> findAll() {
-    String sql = "SELECT * FROM Usuario";
-    return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Usuario.class));
-  }
-
-  public void inserirUsuario(Usuario usuario) {
-    String sql = "INSERT INTO Usuario (nome, email, senha, cpf, endereco_id) VALUES (?, ?, ?, ?, ?)";
-    jdbcTemplate.update(sql,
-      usuario.getNome(),
-      usuario.getEmail(),
-      usuario.getSenha(),
-      usuario.getCpf(),
-      usuario.getEnderecoId()
+    String sql = "SELECT id_usuario AS idUsuario, nome, email, senha, cpf FROM Usuario";
+    return jdbcTemplate.query(
+      sql,
+      new BeanPropertyRowMapper<>(Usuario.class)
     );
   }
 
+  public int inserirUsuario(Usuario usuario) {
+    String sql = "INSERT INTO Usuario (nome, email, senha, cpf) VALUES (?, ?, ?, ?)";
+    jdbcTemplate.update(
+      sql,
+      usuario.getNome(),
+      usuario.getEmail(),
+      usuario.getSenha(),
+      usuario.getCpf()
+    );
+    return jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
+  }
 }

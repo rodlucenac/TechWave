@@ -1,80 +1,75 @@
-import React, { useState, useEffect } from 'react';
+// src/pages/EnderecoForm.jsx
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../services/api';
 import styles from './EnderecoForm.module.css';
+import { AuthContext } from '../contexts/AuthContext';
 
 export default function EnderecoForm() {
-  const { id } = useParams(); // 'novo' ou id existente
-  const isEdit = id !== 'novo';
-  const [form, setForm] = useState({
-    rua: '', numero: '', bairro: '',
-    cidade: '', estado: '', cep: ''
-  });
-  const [erro, setErro] = useState('');
+  const { id } = useParams();
+  const isEdit = Boolean(id) && id !== 'novo';
+  const { user } = useContext(AuthContext);
+  const [form, setForm] = useState({ rua: '', numero: '', bairro: '', cidade: '', estado: '', cep: '' });
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
     if (isEdit) {
-      async function loadEndereco() {
-        try {
-          const resp = await api.get(`/api/enderecos/${id}`);
-          setForm({ ...resp.data });
-        } catch (err) {
-          console.error('Erro ao carregar:', err);
-        }
-      }
-      loadEndereco();
+      api.get(`/api/enderecos/${id}`)
+         .then(res => setForm(res.data))
+         .catch(() => setError('Erro ao carregar endereço.'));
     }
   }, [id, isEdit]);
 
-  const handleChange = e => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async e => {
     e.preventDefault();
-    setErro('');
-    // validações básicas
-    if (!form.rua || !form.numero || !form.bairro || !form.cidade || !form.estado || !form.cep) {
-      setErro('Preencha todos os campos.');
+    setError('');
+    const { rua, numero, bairro, cidade, estado, cep } = form;
+    if (!rua || !numero || !bairro || !cidade || !estado || !cep) {
+      setError('Preencha todos os campos.');
       return;
     }
+    console.log(user);
+    // Monta payload incluindo idUsuario para vincular corretamente
+    const payload = { ...form, idUsuario: user.detalhes.id };
+
     try {
       if (isEdit) {
-        await api.put(`/enderecos/${id}`, form);
+        await api.put(`/api/enderecos/${id}`, payload);
       } else {
-        await api.post('/enderecos', form);
+        await api.post('/api/enderecos', payload);
       }
       navigate('/enderecos');
     } catch (err) {
-      console.error('Erro ao salvar:', err);
-      setErro('Falha ao salvar. Tente novamente.');
+      console.error(err);
+      setError('Falha ao salvar.');
     }
   };
 
   return (
     <div className={styles.container}>
-      <h1>{isEdit ? 'Editar Endereço' : 'Novo Endereço'}</h1>
-      {erro && <div className={styles.error}>{erro}</div>}
+      <h1 className={styles.title}>{isEdit ? 'Editar Endereço' : 'Novo Endereço'}</h1>
+      {error && <p className={styles.error}>{error}</p>}
       <form onSubmit={handleSubmit} className={styles.form}>
         {['rua','numero','bairro','cidade','estado','cep'].map(field => (
           <div key={field} className={styles.field}>
-            <label>{field.charAt(0).toUpperCase() + field.slice(1)}</label>
+            <label className={styles.label} htmlFor={field}>{field.charAt(0).toUpperCase()+field.slice(1)}</label>
             <input
+              id={field}
               name={field}
+              className={styles.input}
               value={form[field]}
               onChange={handleChange}
-              maxLength={field === 'estado' ? 2 : undefined}
+              maxLength={field==='estado'?2:undefined}
+              required
             />
           </div>
         ))}
         <div className={styles.buttons}>
-          <button type="button" onClick={() => navigate(-1)} className={styles.backBtn}>
-            Voltar
-          </button>
-          <button type="submit" className={styles.saveBtn}>
-            Salvar
-          </button>
+          <button type="button" onClick={() => navigate(-1)} className={styles.cancel}>Cancelar</button>
+          <button type="submit" className={styles.submit}>Salvar</button>
         </div>
       </form>
     </div>

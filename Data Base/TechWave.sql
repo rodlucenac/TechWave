@@ -20,6 +20,16 @@ FLUSH PRIVILEGES;
 CREATE DATABASE IF NOT EXISTS TechWave;
 USE TechWave;
 
+ALTER TABLE Usuario DROP COLUMN endereco_id;
+
+-- Adicione o id do usuário na tabela Endereco
+ALTER TABLE Endereco
+  ADD COLUMN id_usuario INT,
+  ADD CONSTRAINT fk_endereco_usuario
+    FOREIGN KEY (id_usuario)
+    REFERENCES Usuario(id_usuario)
+    ON DELETE CASCADE;
+
 -- Tabelas principais
 CREATE TABLE Endereco (
     id_endereco INT AUTO_INCREMENT PRIMARY KEY,

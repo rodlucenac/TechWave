@@ -6,9 +6,7 @@ public class Usuario {
   private String email;
   private String senha;
   private String cpf;
-  private int enderecoId;
 
-  // Getters e Setters
   public int getIdUsuario() {
     return idUsuario;
   }
@@ -39,12 +37,4 @@ public class Usuario {
   public void setCpf(String cpf) {
     this.cpf = cpf;
   }
-  public int getEnderecoId() {
-      return enderecoId;
-  }
-  public void setEnderecoId(int enderecoId) {
-    this.enderecoId = enderecoId;
-  }
-
 }
-
