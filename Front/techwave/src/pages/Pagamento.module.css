@@ -1,0 +1,156 @@
+/* src/pages/Pagamento.module.css */
+
+.page {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  background: #f5f5f5;
+  min-height: calc(100vh - 64px);
+}
+
+.methods {
+  flex: 2;
+}
+
+.methods h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  background: #fff;
+  transition: border-color 0.2s;
+}
+
+.option:hover {
+  border-color: #007bff;
+}
+
+.option input {
+  margin-right: 0.75rem;
+  accent-color: #007bff;
+}
+
+.desc {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.fieldsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 2rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.field label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  color: #333;
+}
+
+.field input {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.95rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field input::placeholder {
+  color: #aaa;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+
+.summary {
+  flex: 1;
+  background: #fff;
+  padding: 1.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  height: max-content;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.summary h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #333;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.discount {
+  color: #008000;
+}
+
+.totalBox {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding-top: 0.5rem;
+  border-top: 1px solid #ddd;
+}
+
+.btnContinue,
+.btnBack {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btnContinue {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.btnContinue:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.btnContinue:disabled {
+  background-color: #a0cfff;
+  cursor: not-allowed;
+}
+
+.btnBack {
+  background: transparent;
+  color: #007bff;
+  border: 1px solid #007bff;
+}
+
+.btnBack:hover {
+  background: #f0f8ff;
+}

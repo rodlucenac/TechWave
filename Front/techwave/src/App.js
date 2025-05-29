@@ -11,7 +11,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import { CartProvider } from './contexts/CartContext';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
-
+import Pagamento from './pages/Pagamento';
 
 function App() {
   return (
@@ -38,6 +38,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         {/* Checkout */}
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/pagamento" element={<Pagamento />} />
 
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>

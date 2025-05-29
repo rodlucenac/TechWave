@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
 import api from '../services/api';
-import { checkout } from '../services/cartService';
 import Header from '../components/Header';
 import styles from './Checkout.module.css';
 
@@ -38,22 +37,15 @@ export default function Checkout() {
   const total = cart?.itens.reduce((s,i) => s + i.precoUnitario * i.quantidade, 0) || 0;
 
   const finalizar = async () => {
-    if (!selEnd) return alert('Selecione um endereço');
-    const cartId = await ensureCart();
-    await checkout(cartId, selEnd); // POST /api/cart/{cartId}/checkout?enderecoId=...
-    alert('Pedido gerado com sucesso!');
-    navigate('/meus-pedidos');
+    if (!selEnd) {
+      return alert('Selecione um endereço');
+    }
+    // redireciona para a tela de pagamento
+    navigate('/pagamento');
   };
 
   if (loading) return <p className={styles.loading}>Carregando…</p>;
 
-  // Placeholder functions for change and rm, since they are used in the new layout but not defined
-  const change = (produtoId, delta) => {
-    // Implement quantity change logic here
-  };
-  const rm = (produtoId) => {
-    // Implement remove item logic here
-  };
 
   return (
     <>
@@ -71,12 +63,7 @@ export default function Checkout() {
                 <div className={styles.itemInfo}>
                   <strong>{i.nome}</strong>
                   <p>{i.descricao}</p>
-                  <div className={styles.qty}>
-                    <button onClick={() => change(i.produtoId, -1)}>-</button>
-                    {i.quantidade}
-                    <button onClick={() => change(i.produtoId, +1)}>+</button>
-                  </div>
-                  <button className={styles.removeBtn} onClick={() => rm(i.produtoId)}>REMOVER</button>
+                  <p className={styles.itemQuantity}>Quantidade: {i.quantidade}</p>
                 </div>
                 <div className={styles.itemPrice}>
                   R$ {i.precoUnitario.toFixed(2)}
@@ -128,23 +115,20 @@ export default function Checkout() {
                 </option>
               ))}
             </select>
-            <div className={styles.addrActions}>
-              <button className={styles.linkBtn}>EDITAR</button>
-              <button className={styles.linkBtn}>NOVO ENDEREÇO</button>
-            </div>
+          
             <p className={styles.vendorFooter}>
-              Vendido e entregue por: <strong>Magalu</strong>
+              Vendido e entregue por: <strong>TechWave</strong>
             </p>
             <div className={styles.shippingMethods}>
               <h3>Forma de Envio</h3>
               <label>
-                <input type="radio" name="ship" defaultChecked /> Magalog Convencional – Grátis
+                <input type="radio" name="ship" defaultChecked /> Correios Convencional – Grátis
               </label>
             </div>
           </div>
 
           <button className={styles.btnCheckout} onClick={finalizar}>
-            Confirmar Pedido
+            ir para pagamento
           </button>
         </aside>
       </main>

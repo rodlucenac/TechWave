@@ -47,40 +47,44 @@ export default function Cart() {
     <>
       <Header />
       <div className={styles.backWrapper}>
-        <Link to="/" className={styles.backBtn}>← Voltar</Link>
+        <Link to="/" className={styles.backBtn}>
+          <span aria-hidden="true">←</span>
+          <span>Voltar</span>
+        </Link>
       </div>
       <main className={styles.container}>
-        <h2>Carrinho #{cart.idCarrinho}</h2>
+        <h2 className={styles.title}>Carrinho #{cart.idCarrinho}</h2>
 
         {cart.itens.length === 0 && <p>Seu carrinho está vazio.</p>}
 
         <ul className={styles.list}>
           {cart.itens.map(i => (
             <li key={i.produtoId} className={styles.item}>
-              <span>
-                {i.nome || `Produto ${i.produtoId}`}
-              </span>
-              {i.descricao && (
-                <small className={styles.desc}>
-                  {i.descricao}
-                </small>
-              )}
-              <span>R$ {i.precoUnitario.toFixed(2)}</span>
-              <div className={styles.qty}>
-                <button onClick={() => change(i.produtoId, -1)}>-</button>
-                {i.quantidade}
-                <button onClick={() => change(i.produtoId, +1)}>+</button>
+              <div className={styles.itemLeft}>
+                <h3 className={styles.itemName}>{i.nome}</h3>
+                {i.descricao && <p className={styles.itemDesc}>{i.descricao}</p>}
               </div>
-              <span>
-                Subtotal:&nbsp;
-                R$ {(i.precoUnitario * i.quantidade).toFixed(2)}
-              </span>
-              <button onClick={() => rm(i.produtoId)}>x</button>
+              <div className={styles.itemCenter}>
+                <div className={styles.qty}>
+                  <button onClick={() => change(i.produtoId, -1)}>-</button>
+                  <span>{i.quantidade}</span>
+                  <button onClick={() => change(i.produtoId, +1)}>+</button>
+                </div>
+              </div>
+              <div className={styles.itemRight}>
+                <span className={styles.itemPrice}>R$ {i.precoUnitario.toFixed(2)}</span>
+                <span className={styles.itemSubtotal}>
+                  Subtotal: R$ {(i.precoUnitario * i.quantidade).toFixed(2)}
+                </span>
+                <button className={styles.removeBtn} onClick={() => rm(i.produtoId)}>
+                  Remover
+                </button>
+              </div>
             </li>
           ))}
         </ul>
 
-        <p className={styles.total}>
+        <p className={styles.totalText}>
           <strong>Total: R${" "}
             {cart.itens
               .reduce(
