@@ -12,47 +12,45 @@ export default function Login() {
   const navigate            = useNavigate();
   const { login }           = useContext(AuthContext);
 
-  const getCliente = async user => {
-    const res = await api.get(`/api/clientes/${user.idUsuario}`);
-    return res.data;
-  };
-  const getAdmin = async user => {
-    const res = await api.get(`/api/admin/${user.idUsuario}`);
-    return res.data;
-  };
-
   const handleSubmit = async e => {
-    e.preventDefault();
-    try {
-      const res = await api.get('/api/usuarios');
-      const usuario = res.data.find(
-        u => u.email === email && u.senha === senha
-      );
-      if (!usuario) {
-        setErro('E-mail ou senha incorretos');
-        return;
-      }
+  e.preventDefault();
+  setErro('');
 
-      const cliente = await getCliente(usuario).catch(() => null);
-      const admin   = await getAdmin(usuario).catch(() => null);
-      console.log(usuario, cliente, admin);
+  try {
+    // chama o endpoint de login
+    const res = await api.post('/api/usuarios/login', {
+      email,
+      senha
+    });
 
-      if (cliente) {
-        const usuarioLogado = { tipo: 'cliente', detalhes: { ...cliente, nome: usuario.nome } };
-        login(usuarioLogado);
-        navigate(`/clientes/${cliente.idUsuario}`);
-      } else if (admin) {
-        const usuarioLogado = { tipo: 'admin', detalhes: { ...admin, nome: usuario.nome } };
-        login(usuarioLogado);
-        navigate(`/admin/${admin.idUsuario}`);
-      } else {
-        setErro('Usuário sem papel definido.');
-      }
-    } catch (error) {
-      console.error(error);
+    // destrutura já o que vem do back
+    const { id, nome, tipo } = res.data;
+
+    // salva no contexto de autenticação
+    login({
+      tipo,
+      detalhes: { id, nome, email }
+    });
+
+    // redireciona conforme o tipo
+    if (tipo === 'cliente') {
+      navigate(`/clientes/${id}`);
+    } else {
+      navigate(`/admin/${id}`);
+    }
+
+  } catch (err) {
+    // falha de credenciais
+    if (err.response?.status === 401) {
+      setErro('E-mail ou senha incorretos');
+    } else if (err.response?.status === 403) {
+      setErro('Usuário sem papel definido');
+    } else {
+      console.error(err);
       setErro('Erro ao conectar com o servidor');
     }
-  };
+  }
+};
 
   return (
     <>
