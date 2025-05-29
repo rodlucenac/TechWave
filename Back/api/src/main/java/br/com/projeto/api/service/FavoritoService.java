@@ -1,11 +1,12 @@
 package br.com.projeto.api.service;
 
-import br.com.projeto.api.model.Favorito;
-import br.com.projeto.api.repository.FavoritoRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
+
+import br.com.projeto.api.model.Produto;
+import br.com.projeto.api.repository.FavoritoRepository;
 
 @Service
 public class FavoritoService {
@@ -13,17 +14,23 @@ public class FavoritoService {
   @Autowired
   private FavoritoRepository favoritoRepository;
 
-  public List<Favorito> listarFavoritosPorCliente(int clienteId) {
-    return favoritoRepository.findByClienteId(clienteId);
+  public void favoritar(int produtoId, int clienteId) {
+    if (!favoritoRepository.existeFavorito(produtoId, clienteId)) {
+      favoritoRepository.inserirFavorito(produtoId, clienteId);
+    }
   }
 
-  @Transactional
-  public void adicionarFavorito(Favorito favorito) {
-    favoritoRepository.inserirFavorito(favorito);
+  public void desfavoritar(int produtoId, int clienteId) {
+    if (favoritoRepository.existeFavorito(produtoId, clienteId)) {
+      favoritoRepository.removerFavorito(produtoId, clienteId);
+    }
   }
 
-  @Transactional
-  public void removerFavorito(int clienteId, int produtoId) {
-    favoritoRepository.deletarFavorito(clienteId, produtoId);
+  public boolean isFavorito(int produtoId, int clienteId) {
+    return favoritoRepository.existeFavorito(produtoId, clienteId);
   }
+
+  public List<Produto> listarProdutosFavoritos(int clienteId) {
+    return favoritoRepository.listarProdutosFavoritosPorCliente(clienteId);
+}
 }

@@ -10,6 +10,8 @@ import "slick-carousel/slick/slick-theme.css";
 import styles from './Home.module.css';
 import { useCart } from '../contexts/CartContext';
 import { addItem } from '../services/cartService';
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
+
 
 export default function Home() {
   const { user, logout } = useAuth();
@@ -17,6 +19,7 @@ export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [produtos, setProdutos]       = useState([]);
   const {  ensureCart } = useCart();
+  const [favoritos, setFavoritos] = useState([]);
 
   useEffect(() => {
     api.get('/produtos')
@@ -29,15 +32,51 @@ export default function Home() {
     navigate('/login', { replace: true });
   };
 
-  // adiciona item ao carrinho usando await/async para garantir id válido
+  useEffect(() => {
+  async function fetchFavoritos() {
+    if (user?.detalhes?.idUsuario) {
+      const resp = await api.get('/api/favoritos/listar', {
+        params: { clienteId: user.detalhes.idUsuario }
+      });
+      setFavoritos(resp.data.map(fav => fav.produtoId));
+    }
+  }
+  fetchFavoritos();
+  }, [user]);
+
   const handleAddToCart = async (idProduto) => {
     try {
-      const id = await ensureCart();        // cria ou pega carrinho
-      await addItem(id, idProduto, 1);      // adiciona item
+      const id = await ensureCart();
+      await addItem(id, idProduto, 1);
       alert('Produto adicionado ao carrinho!');
     } catch (err) {
       console.error(err);
       alert('Erro ao adicionar: ' + err.message);
+    }
+  };
+
+  const handleToggleFavorito = async (idProduto) => {
+    if (!user) {
+      alert('Faça login para favoritar produtos!');
+      navigate('/login');
+      return;
+    }
+    const jaFavoritado = favoritos.includes(idProduto);
+    try {
+      if (!jaFavoritado) {
+        console.log(user);
+        await api.post('/api/favoritos/adicionar', null, {
+          params: { produtoId: idProduto, clienteId: user.detalhes.id }
+        });
+        setFavoritos(favs => [...favs, idProduto]);
+      } else {
+        await api.delete('/api/favoritos/remover', {
+          params: { produtoId: idProduto, clienteId: user.detalhes.id }
+        });
+        setFavoritos(favs => favs.filter(id => id !== idProduto));
+      }
+    } catch (e) {
+      alert('Erro ao favoritar!');
     }
   };
 
@@ -82,7 +121,7 @@ export default function Home() {
           <>
             <p className={styles.userGreeting}>Olá, {user.detalhes.nome}!</p>
             <Link to="/meus-pedidos">Pedidos</Link>
-            <Link to="/favoritos">Produtos Favoritos</Link>
+            <Link to="/favorito">Produtos Favoritos</Link>
             <Link to="/meus-dados">Meus Dados</Link>
             <Link to="/enderecos">Endereço</Link>
             <Link to="/notificacoes">Notificações</Link>
@@ -126,20 +165,28 @@ export default function Home() {
           </Slider>
         </div>
 
-        <section className={styles.productsGrid}>
-          {produtos.map(p => (
-            <div key={p.idProduto} className={styles.productCard}>
+        {produtos.map(p => (
+          <div key={p.idProduto} className={styles.productCard}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <h3>{p.nome}</h3>
-              <p>R$ {Number(p.preco).toFixed(2)}</p>
               <button
-                className={styles.btnAddCart}
-                onClick={() => handleAddToCart(p.idProduto)}
+                style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#c00', fontSize: 22 }}
+                onClick={() => handleToggleFavorito(p.idProduto)}
+                aria-label={favoritos.includes(p.idProduto) ? 'Desfavoritar' : 'Favoritar'}
               >
-                Adicionar ao Carrinho
+                {favoritos.includes(p.idProduto) ? <FaHeart /> : <FaRegHeart />}
               </button>
             </div>
-          ))}
-        </section>
+            <p>R$ {Number(p.preco).toFixed(2)}</p>
+            <button
+              className={styles.btnAddCart}
+              onClick={() => handleAddToCart(p.idProduto)}
+            >
+              Adicionar ao Carrinho
+            </button>
+          </div>
+        ))}
+
       </main>
 
       <footer className={styles.footer}>

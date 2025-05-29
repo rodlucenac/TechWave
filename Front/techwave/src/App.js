@@ -14,6 +14,7 @@ import Pagamento from './pages/Pagamento';
 import EnderecoForm from './pages/EnderecoForm';
 import EnderecoList from './pages/EnderecoList';
 import MeusPedidos from './pages/MeusPedidos';
+import Favorito from './pages/Favorito';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
         <Route path="/enderecos/novo" element={<EnderecoForm />} />
         <Route path="/enderecos/:id/editar" element={<EnderecoForm />} />
         
+        <Route path="/favorito" element={<Favorito />} />
         {/* Carrinho */}
         <Route path="/cart" element={<Cart />} />
         {/* Checkout */}
