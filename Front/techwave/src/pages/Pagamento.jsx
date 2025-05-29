@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import { useCart } from '../contexts/CartContext';
-import api from '../services/api';
+import { getCarrinho } from '../services/cartService';
+import { payOrder } from '../services/paymentService';
 import styles from './Pagamento.module.css';
 
 export default function Payment() {
   const navigate = useNavigate();
-  const { cartId, ensureCart } = useCart();
+  const { ensureCart } = useCart();
   const [cart, setCart] = useState(null);
   const [method, setMethod] = useState('pix');
   const [loading, setLoading] = useState(false);
@@ -22,8 +23,8 @@ export default function Payment() {
   useEffect(() => {
     async function load() {
       const id = await ensureCart();
-      const res = await api.get(`/api/cart/${id}`);
-      setCart(res.data);
+      const data = await getCarrinho(id);
+      setCart(data);
     }
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -47,12 +48,14 @@ export default function Payment() {
   const handleContinue = async () => {
     setLoading(true);
     try {
-      await ensureCart();
-      await api.post(`/api/cart/${cartId}/checkout?paymentMethod=${method}`);
-      navigate('/confirmation');
+      // we assume the pedidoId is the cart's ID (1:1)
+      const pedidoId = cart.carrinho.idCarrinho;
+      await payOrder(pedidoId, method);
+      alert('Pagamento realizado com sucesso!');
+      navigate('/');
     } catch (err) {
       console.error(err);
-      alert('Erro ao processar pagamento');
+      alert('Erro ao processar pagamento: ' + err.message);
     }
     setLoading(false);
   };

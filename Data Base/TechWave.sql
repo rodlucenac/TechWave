@@ -347,6 +347,54 @@ BEGIN
     GROUP BY DATE(data_pedido);
 END//
 
+
+CREATE PROCEDURE sp_inserir_endereco (
+    IN p_rua VARCHAR(255),
+    IN p_numero VARCHAR(10),
+    IN p_bairro VARCHAR(255),
+    IN p_cidade VARCHAR(255),
+    IN p_estado VARCHAR(2),
+    IN p_cep VARCHAR(10)
+)
+BEGIN
+    INSERT INTO Endereco(rua, numero, bairro, cidade, estado, cep)
+    VALUES(p_rua, p_numero, p_bairro, p_cidade, p_estado, p_cep);
+END //
+
+CREATE PROCEDURE sp_atualizar_endereco(
+    IN p_id_endereco INT,
+    IN p_rua VARCHAR(255),
+    IN p_numero VARCHAR(10),
+    IN p_bairro VARCHAR(255),
+    IN p_cidade VARCHAR(255),
+    IN p_estado VARCHAR(2),
+    IN p_cep VARCHAR(10)
+)
+BEGIN
+    UPDATE Endereco
+    SET rua    = p_rua,
+        numero = p_numero,
+        bairro = p_bairro,
+        cidade = p_cidade,
+        estado = p_estado,
+        cep    = p_cep
+    WHERE id_endereco = p_id_endereco;
+END //
+
+CREATE PROCEDURE sp_deletar_endereco(
+    IN p_id_endereco INT
+)
+BEGIN
+    DELETE FROM Endereco
+    WHERE id_endereco = p_id_endereco;
+END //
+
+
+
+
+
+
+
 -- Trigger de notificação de Pedido
 CREATE TRIGGER tr_status_pedido_notify
 AFTER UPDATE ON Pedido
