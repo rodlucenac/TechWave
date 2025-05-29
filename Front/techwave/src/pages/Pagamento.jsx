@@ -48,9 +48,7 @@ export default function Payment() {
   const handleContinue = async () => {
     setLoading(true);
     try {
-      // we assume the pedidoId is the cart's ID (1:1)
-      const pedidoId = cart.carrinho.idCarrinho;
-      await payOrder(pedidoId, method);
+      await payOrder(cart.carrinho.idCarrinho, total, method);
       alert('Pagamento realizado com sucesso!');
       navigate('/');
     } catch (err) {

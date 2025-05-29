@@ -3,13 +3,15 @@ import api from './api';
 
 /**
  * Envia o pedido de pagamento para o backend.
- * @param {number} pedidoId  ID do pedido gerado no checkout
- * @param {string} tipoPagamento  Ex.: 'pix', 'boleto', 'cartao', etc.
+ * @param {number} carrinhoId  ID do carrinho de compras
+ * @param {number} valorTotal  Valor total a ser pago
+ * @param {string} tipoPagamento  Tipo do pagamento: 'pix', 'boleto', 'cartao', etc.
  * @returns {Promise} Promise que resolve quando o POST retornar 200
  */
-export function payOrder(pedidoId, tipoPagamento) {
+export function payOrder(carrinhoId, valorTotal, tipoPagamento) {
   return api.post('/api/pagamentos', {
-    pedidoId,
+    carrinhoId,
+    valorTotal,
     tipoPagamento
   });
 }

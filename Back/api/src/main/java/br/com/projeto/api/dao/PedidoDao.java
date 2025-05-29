@@ -8,34 +8,37 @@ import java.util.List;
 @Repository
 public class PedidoDao {
     private final JdbcTemplate jdbc;
-    public PedidoDao(JdbcTemplate jdbc) { this.jdbc = jdbc; }
+    public PedidoDao(JdbcTemplate jdbc) {
+        this.jdbc = jdbc;
+    }
 
     public List<Pedido> listarTodos() {
-        return jdbc.query("SELECT * FROM Pedido", (rs, rn) -> {
+        return jdbc.query("SELECT * FROM pedido", (rs, rn) -> {
             Pedido p = new Pedido();
             p.setIdPedido(rs.getInt("id_pedido"));
             p.setDataPedido(rs.getDate("data_pedido"));
             p.setStatusPedido(rs.getString("status_pedido"));
             p.setValorTotal(rs.getBigDecimal("valor_total"));
             p.setCarrinhoId(rs.getInt("carrinho_id"));
+            p.setStatusPagamento(rs.getString("status_pagamento"));
             return p;
         });
     }
 
     public List<Pedido> listarPorCliente(int idCliente) {
         return jdbc.query("""
-            SELECT p.* FROM Pedido p
-            JOIN Carrinho_compra c ON c.id_carrinho = p.carrinho_id
+            SELECT p.* FROM pedido p
+            JOIN carrinho_compra c ON c.id_carrinho = p.carrinho_id
             WHERE c.id_carrinho IN (
-              SELECT id_carrinho FROM Carrinho_compra
+              SELECT id_carrinho FROM carrinho_compra
               WHERE id_carrinho IN (
-                SELECT carrinho_id FROM Pedido WHERE carrinho_id = c.id_carrinho
+                SELECT carrinho_id FROM pedido WHERE carrinho_id = c.id_carrinho
               )
             )
             AND c.id_carrinho IN (
-              SELECT carrinho_id FROM Pedido
-              JOIN Carrinho_compra cc ON cc.id_carrinho = Pedido.carrinho_id
-              JOIN Cliente cl ON cl.id_usuario = ?
+              SELECT carrinho_id FROM pedido
+              JOIN carrinho_compra cc ON cc.id_carrinho = pedido.carrinho_id
+              JOIN cliente cl ON cl.id_usuario = ?
             )
             """,
             (rs, rn) -> {
@@ -45,7 +48,23 @@ public class PedidoDao {
                 p.setStatusPedido(rs.getString("status_pedido"));
                 p.setValorTotal(rs.getBigDecimal("valor_total"));
                 p.setCarrinhoId(rs.getInt("carrinho_id"));
+                p.setStatusPagamento(rs.getString("status_pagamento"));
                 return p;
             }, idCliente);
     }
+
+    public void inserirPedido(Pedido pedido) {
+        String sql = "INSERT INTO Pedido (data_pedido, status_pedido, valor_total, carrinho_id) VALUES (?, ?, ?, ?)";
+jdbc.update(sql,
+    pedido.getDataPedido(),
+    pedido.getStatusPedido(),
+    pedido.getValorTotal(),
+    pedido.getCarrinhoId()
+);
+    }
+    public int obterUltimoId() {
+  return jdbc.queryForObject("SELECT MAX(id_pedido) FROM Pedido", Integer.class);
+}
+
+
 }
